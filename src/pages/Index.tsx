@@ -1,14 +1,19 @@
 import { motion } from "framer-motion";
 import { Truck, AlertTriangle, Activity, Package, TrendingUp, Clock } from "lucide-react";
 import KPICard from "@/components/KPICard";
-import { vehicles, trips, drivers, getVehicleName, getDriverName } from "@/data/mockData";
+import { useFleet } from "@/context/FleetContext";
 import { VehicleStatusBadge, TripStatusBadge } from "@/components/StatusBadge";
 
 export default function Dashboard() {
+  const { vehicles, trips, drivers } = useFleet();
+
+  const getVehicleName = (id: string) => vehicles.find(v => v.id === id)?.name || "Unknown";
+  const getDriverName = (id: string) => drivers.find(d => d.id === id)?.name || "Unknown";
+
   const activeFleet = vehicles.filter(v => v.status === "On Trip").length;
   const inShop = vehicles.filter(v => v.status === "In Shop").length;
   const available = vehicles.filter(v => v.status === "Available").length;
-  const utilization = Math.round((activeFleet / vehicles.filter(v => v.status !== "Retired").length) * 100);
+  const utilization = Math.round((activeFleet / vehicles.filter(v => v.status !== "Retired").length) * 100) || 0;
   const pendingTrips = trips.filter(t => t.status === "Draft").length;
   const activeDrivers = drivers.filter(d => d.status === "On Duty" || d.status === "On Trip").length;
 
@@ -17,8 +22,8 @@ export default function Dashboard() {
   return (
     <div className="p-6 lg:p-8 space-y-8">
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-        <h1 className="text-2xl font-bold text-foreground">Command Center</h1>
-        <p className="text-muted-foreground mt-1">Fleet overview and real-time operations</p>
+        <h1 className="text-2xl font-bold text-white uppercase tracking-wider">Command Center</h1>
+        <p className="text-muted-foreground mt-1 text-sm uppercase tracking-widest">Fleet overview and real-time operations</p>
       </motion.div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
@@ -32,8 +37,8 @@ export default function Dashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Vehicle Status Overview */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="rounded-xl border bg-card p-5">
-          <h2 className="text-lg font-semibold text-card-foreground mb-4">Vehicle Status</h2>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="rounded-xl border border-white/10 glass p-5 active-reflection-border">
+          <h2 className="text-lg font-semibold text-white mb-4 uppercase tracking-wider">Vehicle Status</h2>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
@@ -47,7 +52,7 @@ export default function Dashboard() {
               <tbody>
                 {vehicles.map(v => (
                   <tr key={v.id} className="border-b last:border-0">
-                    <td className="py-3 font-medium text-card-foreground">{v.name}</td>
+                    <td className="py-3 font-medium text-white">{v.name}</td>
                     <td className="py-3 text-muted-foreground font-mono text-xs">{v.licensePlate}</td>
                     <td className="py-3 text-muted-foreground">{v.type}</td>
                     <td className="py-3"><VehicleStatusBadge status={v.status} /></td>
@@ -59,8 +64,8 @@ export default function Dashboard() {
         </motion.div>
 
         {/* Recent Trips */}
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="rounded-xl border bg-card p-5">
-          <h2 className="text-lg font-semibold text-card-foreground mb-4">Recent Trips</h2>
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="rounded-xl border border-white/10 glass p-5 active-reflection-border">
+          <h2 className="text-lg font-semibold text-white mb-4 uppercase tracking-wider">Recent Trips</h2>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
@@ -75,7 +80,7 @@ export default function Dashboard() {
                 {recentTrips.map(t => (
                   <tr key={t.id} className="border-b last:border-0">
                     <td className="py-3">
-                      <span className="font-medium text-card-foreground">{t.origin}</span>
+                      <span className="font-medium text-white">{t.origin}</span>
                       <span className="text-muted-foreground mx-1">→</span>
                       <span className="text-muted-foreground">{t.destination}</span>
                     </td>

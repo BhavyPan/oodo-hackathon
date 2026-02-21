@@ -3,7 +3,9 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import AppLayout from "@/components/AppLayout";
+import AppLayout, { ProtectedRoute, RoleProtectedRoute } from "@/components/AppLayout";
+import { AuthProvider } from "@/context/AuthContext";
+import { FleetProvider } from "@/context/FleetContext";
 import Index from "./pages/Index";
 import Vehicles from "./pages/Vehicles";
 import Trips from "./pages/Trips";
@@ -11,28 +13,65 @@ import Drivers from "./pages/Drivers";
 import Maintenance from "./pages/Maintenance";
 import Analytics from "./pages/Analytics";
 import NotFound from "./pages/NotFound";
+import Login from "./pages/Login";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route element={<AppLayout />}>
-            <Route path="/" element={<Index />} />
-            <Route path="/vehicles" element={<Vehicles />} />
-            <Route path="/trips" element={<Trips />} />
-            <Route path="/drivers" element={<Drivers />} />
-            <Route path="/maintenance" element={<Maintenance />} />
-            <Route path="/analytics" element={<Analytics />} />
-          </Route>
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
+    <AuthProvider>
+      <FleetProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route element={<ProtectedRoute><AppLayout /></ProtectedRoute>}>
+                {/* Command Center: All Roles */}
+                <Route path="/" element={<Index />} />
+
+                {/* Vehicle Registry: Manager, Dispatcher, Safety Officer */}
+                <Route path="/vehicles" element={
+                  <RoleProtectedRoute allowedRoles={["Manager", "Dispatcher", "Safety Officer"]}>
+                    <Vehicles />
+                  </RoleProtectedRoute>
+                } />
+
+                {/* Trip Dispatcher: Manager, Dispatcher */}
+                <Route path="/trips" element={
+                  <RoleProtectedRoute allowedRoles={["Manager", "Dispatcher"]}>
+                    <Trips />
+                  </RoleProtectedRoute>
+                } />
+
+                {/* Driver Profiles: Manager, Dispatcher, Safety Officer */}
+                <Route path="/drivers" element={
+                  <RoleProtectedRoute allowedRoles={["Manager", "Dispatcher", "Safety Officer"]}>
+                    <Drivers />
+                  </RoleProtectedRoute>
+                } />
+
+                {/* Maintenance: Manager, Safety Officer */}
+                <Route path="/maintenance" element={
+                  <RoleProtectedRoute allowedRoles={["Manager", "Safety Officer"]}>
+                    <Maintenance />
+                  </RoleProtectedRoute>
+                } />
+
+                {/* Analytics: Manager, Finance */}
+                <Route path="/analytics" element={
+                  <RoleProtectedRoute allowedRoles={["Manager", "Finance"]}>
+                    <Analytics />
+                  </RoleProtectedRoute>
+                } />
+              </Route>
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </FleetProvider>
+    </AuthProvider>
   </QueryClientProvider>
 );
 
