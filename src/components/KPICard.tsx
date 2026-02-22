@@ -12,21 +12,39 @@ interface KPICardProps {
 export default function KPICard({ title, value, subtitle, icon, accent }: KPICardProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-      className={`rounded-xl border p-5 glass active-reflection active-reflection-border ${accent ? "border-primary/50 shadow-[0_0_15px_#ccff001a]" : "border-white/10 hover:border-white/30"}`}
+      whileHover={{ y: -5, scale: 1.01, transition: { duration: 0.3, ease: "easeOut" } }}
+      className={`rounded-3xl p-8 md:p-10 relative overflow-hidden group/kpi active-reflection-border active-reflection ${accent ? "glass-neon" : "glass"}`}
+      data-active={accent ? "true" : "false"}
     >
-      <div className="flex items-start justify-between">
-        <div>
-          <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider">{title}</p>
-          <p className="mt-1 text-3xl font-bold text-white tracking-widest text-glow">{value}</p>
-          {subtitle && <p className="mt-1 text-xs text-muted-foreground">{subtitle}</p>}
+      <div className="absolute top-0 inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-white/30 to-transparent opacity-50" />
+      <div className="flex flex-col h-full justify-between relative z-10 gap-8">
+
+        <div className="flex justify-between items-start">
+          <p className="text-xs md:text-sm font-black text-white/40 uppercase tracking-[0.2em] group-hover/kpi:text-white/80 transition-colors w-1/2 leading-tight">
+            {title}
+          </p>
+          <div className={`rounded-full p-4 shadow-2xl transition-all duration-700 group-hover/kpi:scale-110 group-hover/kpi:rotate-12 ${accent ? "bg-primary text-black" : "bg-white/5 text-white/60 border border-white/10"}`}
+            style={accent ? { boxShadow: "0 0 20px rgba(204,255,0,0.5)" } : {}}>
+            {icon}
+          </div>
         </div>
-        <div className={`rounded-lg p-2.5 ${accent ? "bg-primary/20 text-primary border border-primary/30" : "bg-white/5 text-muted-foreground border border-white/10"}`}>
-          {icon}
+
+        <div>
+          <p className={`text-5xl md:text-7xl font-black tracking-tighter ${accent ? "text-primary text-glow drop-shadow-[0_0_15px_rgba(204,255,0,0.5)]" : "text-white drop-shadow-md"} mix-blend-screen leading-none`}>
+            {value}
+          </p>
+          {subtitle && (
+            <div className="flex items-center gap-3 mt-4">
+              <div className={`h-px w-8 ${accent ? "bg-primary" : "bg-white/20"}`}></div>
+              <p className="text-[10px] md:text-xs font-bold text-white/50 uppercase tracking-[0.2em]">{subtitle}</p>
+            </div>
+          )}
         </div>
       </div>
+
+      {/* Extreme Decorative reflection */}
+      <div className="absolute -bottom-20 -right-20 w-64 h-64 bg-primary/20 rounded-full blur-[80px] opacity-0 group-hover/kpi:opacity-100 transition-opacity duration-1000 pointer-events-none" />
+      <div className="absolute -top-20 -left-20 w-40 h-40 bg-white/5 rounded-full blur-[50px] opacity-50 pointer-events-none" />
     </motion.div>
   );
 }

@@ -154,183 +154,229 @@ export default function Trips() {
   };
 
   return (
-    <div className="p-6 lg:p-8 space-y-6">
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-white uppercase tracking-wider">Trip Dispatcher</h1>
-          <p className="text-muted-foreground mt-1 text-sm uppercase tracking-widest">Manage shipments and dispatch operations</p>
+    <div className="pb-40 cursor-none">
+      {/* Mini Hero Header */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="pt-12 pb-20 px-4 md:px-8 text-center relative"
+      >
+        <div className="flex items-center justify-center gap-4 mb-4">
+          <div className="h-px w-12 bg-primary hidden md:block"></div>
+          <p className="text-primary font-black uppercase tracking-[0.3em] text-[10px] md:text-sm text-glow">Logistics Control</p>
+          <div className="h-px w-12 bg-primary hidden md:block"></div>
         </div>
-        <Button onClick={() => setIsDialogOpen(true)} className="gap-2 bg-primary text-black hover:bg-primary/90 transition-opacity font-bold uppercase tracking-wider">
-          <Plus className="h-4 w-4" /> New Trip
-        </Button>
+        <h1 className="text-5xl md:text-7xl font-black text-white uppercase tracking-tighter text-glow">
+          Dispatch Orders
+        </h1>
+        <p className="mt-4 text-white/50 text-xs md:text-sm font-bold tracking-widest uppercase max-w-xl mx-auto">
+          Coordinate, dispatch, and track active delivery operations and field personnel.
+        </p>
       </motion.div>
 
-      <div className="flex gap-2 flex-wrap">
-        {(["All", "Draft", "Dispatched", "Completed", "Cancelled"] as const).map(s => (
-          <button
-            key={s}
-            onClick={() => setStatusFilter(s)}
-            className={`rounded-lg px-3 py-1.5 text-sm font-medium transition-colors uppercase tracking-wider ${statusFilter === s ? "bg-primary text-black font-bold shadow-[0_0_10px_#ccff0080]" : "bg-white/5 text-muted-foreground hover:text-white"
-              }`}
+      <div className="max-w-[1600px] mx-auto px-4 md:px-8 space-y-8">
+
+        {/* Controls Toolbar */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.6 }}
+          className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 glass p-6 rounded-3xl border-white/5 active-reflection-border relative z-20"
+        >
+          <div className="flex flex-wrap gap-2 w-full md:w-auto overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
+            {(["All", "Draft", "Dispatched", "Completed", "Cancelled"] as const).map(s => (
+              <button
+                key={s}
+                onClick={() => setStatusFilter(s)}
+                className={`rounded-xl px-6 py-3 text-xs font-black transition-all uppercase tracking-[0.2em] whitespace-nowrap cursor-none ${statusFilter === s
+                    ? "bg-primary text-black shadow-[0_0_20px_rgba(204,255,0,0.4)] scale-105"
+                    : "bg-white/5 text-white/40 hover:text-white hover:bg-white/10"
+                  }`}
+              >
+                {s}
+              </button>
+            ))}
+          </div>
+
+          <Button
+            onClick={() => setIsDialogOpen(true)}
+            className="w-full md:w-auto gap-3 bg-primary text-black font-black uppercase tracking-[0.2em] hover:bg-primary/80 transition-all rounded-xl h-[46px] cursor-none shadow-[0_0_15px_rgba(204,255,0,0.3)] shrink-0"
           >
-            {s}
-          </button>
-        ))}
+            <Plus className="h-5 w-5" /> Generate Order
+          </Button>
+        </motion.div>
+
+        {/* Data Table */}
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.8 }}
+          className="rounded-[2.5rem] glass p-8 active-reflection-border group relative overflow-hidden"
+        >
+          <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2 pointer-events-none z-0" />
+
+          <div className="overflow-x-auto relative z-10 w-full">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b-2 border-white/10 text-white/40">
+                  <th className="px-6 py-6 text-left font-black uppercase tracking-[0.2em] text-[10px]">Route Path</th>
+                  <th className="px-6 py-6 text-left font-black uppercase tracking-[0.2em] text-[10px]">Asset</th>
+                  <th className="px-6 py-6 text-left font-black uppercase tracking-[0.2em] text-[10px]">Operator</th>
+                  <th className="px-6 py-6 text-left font-black uppercase tracking-[0.2em] text-[10px] hidden lg:table-cell">Payload</th>
+                  <th className="px-6 py-6 text-left font-black uppercase tracking-[0.2em] text-[10px] hidden md:table-cell">Timestamp</th>
+                  <th className="px-6 py-6 text-left font-black uppercase tracking-[0.2em] text-[10px]">Status</th>
+                  <th className="px-6 py-6 text-right font-black uppercase tracking-[0.2em] text-[10px]">Command</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/5">
+                {filtered.map((t, i) => (
+                  <motion.tr
+                    key={t.id}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: (i % 8) * 0.05, duration: 0.4 }}
+                    className="group/row hover:bg-white/5 transition-colors cursor-none"
+                  >
+                    <td className="px-6 py-6">
+                      <div className="flex items-center gap-3">
+                        <span className="font-black text-white text-base max-w-[120px] truncate">{t.origin}</span>
+                        <div className="h-px w-4 bg-white/20 group-hover/row:bg-primary transition-colors"></div>
+                        <span className="font-black text-white/60 text-sm max-w-[120px] truncate">{t.destination}</span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-6 text-white/80 font-mono text-xs tracking-widest uppercase">{getVehicleName(t.vehicleId)}</td>
+                    <td className="px-6 py-6 text-primary/80 font-bold text-xs uppercase tracking-widest">{getDriverName(t.driverId)}</td>
+                    <td className="px-6 py-6 text-white/40 font-mono text-xs hidden lg:table-cell">{t.cargoWeight.toLocaleString()} KG</td>
+                    <td className="px-6 py-6 text-white/40 font-mono text-xs hidden md:table-cell tracking-widest">{new Date(t.createdAt).toLocaleDateString()}</td>
+                    <td className="px-6 py-6"><TripStatusBadge status={t.status} /></td>
+                    <td className="px-6 py-6 text-right">
+                      <div className="flex justify-end gap-2">
+                        {t.status === "Draft" && (
+                          <Button variant="outline" size="sm" onClick={() => handleDispatch(t.id)} className="cursor-none border-blue-500/30 text-blue-400 hover:bg-blue-500/20 hover:text-blue-300 uppercase tracking-widest text-[10px] font-bold">
+                            <Play className="h-3 w-3 mr-2" /> Dispatch
+                          </Button>
+                        )}
+                        {t.status === "Dispatched" && (
+                          <Button variant="outline" size="sm" onClick={() => openCompleteDialog(t)} className="cursor-none border-green-500/30 text-green-400 hover:bg-green-500/20 hover:text-green-300 uppercase tracking-widest text-[10px] font-bold">
+                            <CheckCircle className="h-3 w-3 mr-2" /> Complete
+                          </Button>
+                        )}
+                        {t.status === "Completed" && (
+                          <Button variant="outline" size="sm" onClick={() => openFuelDialog(t)} className="cursor-none border-orange-500/30 text-orange-400 hover:bg-orange-500/20 hover:text-orange-300 uppercase tracking-widest text-[10px] font-bold">
+                            <Fuel className="h-3 w-3 mr-2" /> Log Fuel
+                          </Button>
+                        )}
+                      </div>
+                    </td>
+                  </motion.tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {filtered.length === 0 && (
+            <div className="py-24 text-center">
+              <p className="text-white/40 font-bold uppercase tracking-widest text-sm text-glow">No dispatch records found</p>
+            </div>
+          )}
+        </motion.div>
       </div>
 
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="rounded-xl border border-white/10 glass overflow-hidden active-reflection-border">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="bg-white/5 text-white uppercase tracking-wider text-xs">
-                <th className="px-5 py-3.5 text-left font-medium">Route</th>
-                <th className="px-5 py-3.5 text-left font-medium">Vehicle</th>
-                <th className="px-5 py-3.5 text-left font-medium">Driver</th>
-                <th className="px-5 py-3.5 text-left font-medium">Cargo (kg)</th>
-                <th className="px-5 py-3.5 text-left font-medium">Created</th>
-                <th className="px-5 py-3.5 text-left font-medium">Status</th>
-                <th className="px-5 py-3.5 text-right font-medium">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((t, i) => (
-                <motion.tr
-                  key={t.id}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: i * 0.03 }}
-                  className="border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors"
-                >
-                  <td className="px-5 py-4">
-                    <span className="font-medium text-white">{t.origin}</span>
-                    <span className="text-primary mx-1.5 font-bold">→</span>
-                    <span className="text-muted-foreground">{t.destination}</span>
-                  </td>
-                  <td className="px-5 py-4 text-muted-foreground">{getVehicleName(t.vehicleId)}</td>
-                  <td className="px-5 py-4 text-muted-foreground">{getDriverName(t.driverId)}</td>
-                  <td className="px-5 py-4 text-muted-foreground">{t.cargoWeight.toLocaleString()}</td>
-                  <td className="px-5 py-4 text-muted-foreground text-xs">{new Date(t.createdAt).toLocaleDateString()}</td>
-                  <td className="px-5 py-4"><TripStatusBadge status={t.status} /></td>
-                  <td className="px-5 py-4 text-right">
-                    <div className="flex justify-end gap-2">
-                      {t.status === "Draft" && (
-                        <Button variant="outline" size="sm" onClick={() => handleDispatch(t.id)}>
-                          <Play className="h-4 w-4 mr-1 text-blue-500" /> Dispatch
-                        </Button>
-                      )}
-                      {t.status === "Dispatched" && (
-                        <Button variant="outline" size="sm" onClick={() => openCompleteDialog(t)}>
-                          <CheckCircle className="h-4 w-4 mr-1 text-green-500" /> Complete
-                        </Button>
-                      )}
-                      {t.status === "Completed" && (
-                        <Button variant="outline" size="sm" onClick={() => openFuelDialog(t)}>
-                          <Fuel className="h-4 w-4 mr-1 text-orange-500" /> Log Fuel
-                        </Button>
-                      )}
-                    </div>
-                  </td>
-                </motion.tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        {filtered.length === 0 && (
-          <div className="py-12 text-center text-muted-foreground">No trips found.</div>
-        )}
-      </motion.div>
-
-      {/* Create Trip Dialog */}
+      {/* Dialogs updated for cinematic style */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Create New Trip</DialogTitle>
+        <DialogContent className="sm:max-w-[425px] glass-neon border border-primary/20 bg-black/90 p-8 rounded-3xl cursor-none">
+          <DialogHeader className="mb-6">
+            <DialogTitle className="text-2xl font-black text-white uppercase tracking-tighter text-glow">
+              Generate Route Order
+            </DialogTitle>
           </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="origin" className="text-right">Origin</Label>
-              <Input id="origin" value={formData.origin} onChange={e => setFormData({ ...formData, origin: e.target.value })} className="col-span-3" />
+          <div className="grid gap-6">
+            <div className="space-y-2">
+              <Label htmlFor="origin" className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Origin Point</Label>
+              <Input id="origin" value={formData.origin} onChange={e => setFormData({ ...formData, origin: e.target.value })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary focus-visible:border-primary transition-all cursor-none" />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="dest" className="text-right">Destination</Label>
-              <Input id="dest" value={formData.destination} onChange={e => setFormData({ ...formData, destination: e.target.value })} className="col-span-3" />
+            <div className="space-y-2">
+              <Label htmlFor="dest" className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Destination Point</Label>
+              <Input id="dest" value={formData.destination} onChange={e => setFormData({ ...formData, destination: e.target.value })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary focus-visible:border-primary transition-all cursor-none" />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="weight" className="text-right">Cargo (kg)</Label>
-              <Input id="weight" type="number" value={formData.cargoWeight} onChange={e => setFormData({ ...formData, cargoWeight: parseInt(e.target.value) })} className="col-span-3" />
+            <div className="space-y-2">
+              <Label htmlFor="weight" className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Payload Mass (KG)</Label>
+              <Input id="weight" type="number" value={formData.cargoWeight} onChange={e => setFormData({ ...formData, cargoWeight: parseInt(e.target.value) })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary focus-visible:border-primary transition-all cursor-none" />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label className="text-right">Vehicle</Label>
+            <div className="space-y-2">
+              <Label className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Assign Asset</Label>
               <Select value={formData.vehicleId} onValueChange={(v) => setFormData({ ...formData, vehicleId: v })}>
-                <SelectTrigger className="col-span-3">
-                  <SelectValue placeholder="Select Available Vehicle" />
+                <SelectTrigger className="bg-black/50 border-white/10 text-white focus:ring-primary cursor-none">
+                  <SelectValue placeholder="Select Available Asset" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-black/90 border-white/10 text-white backdrop-blur-xl cursor-none">
                   {availableVehicles.map(v => (
-                    <SelectItem key={v.id} value={v.id}>{v.name} ({v.maxCapacity}kg max)</SelectItem>
+                    <SelectItem key={v.id} value={v.id} className="cursor-none hover:bg-primary hover:text-black">{v.name} ({v.maxCapacity}K MAX)</SelectItem>
                   ))}
-                  {availableVehicles.length === 0 && <SelectItem value="none" disabled>No vehicles available</SelectItem>}
+                  {availableVehicles.length === 0 && <SelectItem value="none" disabled className="text-white/40">No assets available</SelectItem>}
                 </SelectContent>
               </Select>
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label className="text-right">Driver</Label>
+            <div className="space-y-2">
+              <Label className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Assign Operator</Label>
               <Select value={formData.driverId} onValueChange={(v) => setFormData({ ...formData, driverId: v })}>
-                <SelectTrigger className="col-span-3">
-                  <SelectValue placeholder="Select Available Driver" />
+                <SelectTrigger className="bg-black/50 border-white/10 text-white focus:ring-primary cursor-none">
+                  <SelectValue placeholder="Select Available Operator" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-black/90 border-white/10 text-white backdrop-blur-xl cursor-none">
                   {availableDrivers.map(d => (
-                    <SelectItem key={d.id} value={d.id}>{d.name}</SelectItem>
+                    <SelectItem key={d.id} value={d.id} className="cursor-none hover:bg-primary hover:text-black">{d.name}</SelectItem>
                   ))}
-                  {availableDrivers.length === 0 && <SelectItem value="none" disabled>No valid drivers available</SelectItem>}
+                  {availableDrivers.length === 0 && <SelectItem value="none" disabled className="text-white/40">No operators available</SelectItem>}
                 </SelectContent>
               </Select>
             </div>
           </div>
-          <DialogFooter>
-            <Button onClick={handleCreate}>Create Trip</Button>
+          <DialogFooter className="mt-8 border-t border-white/10 pt-6">
+            <Button onClick={handleCreate} className="w-full bg-primary text-black font-black uppercase tracking-[0.2em] hover:bg-primary/80 transition-all h-12 cursor-none shadow-[0_0_20px_rgba(204,255,0,0.3)]">
+              Initialize Route
+            </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
-      {/* Complete Trip Dialog */}
       <Dialog open={isCompleteDialogOpen} onOpenChange={setIsCompleteDialogOpen}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Complete Trip</DialogTitle>
+        <DialogContent className="sm:max-w-[425px] glass border border-primary/20 bg-black/90 p-8 rounded-3xl cursor-none">
+          <DialogHeader className="mb-6">
+            <DialogTitle className="text-2xl font-black text-white uppercase tracking-tighter text-glow">Confirm Arrival</DialogTitle>
           </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <p className="text-sm text-muted-foreground">Please confirm the final odometer reading for the vehicle.</p>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="odo" className="text-right">Odometer</Label>
-              <Input id="odo" type="number" value={finalOdometer} onChange={e => setFinalOdometer(parseInt(e.target.value))} className="col-span-3" />
+          <div className="grid gap-6">
+            <p className="text-xs text-white/50 uppercase tracking-widest font-bold">Verify final telemetric reading for returning asset.</p>
+            <div className="space-y-2">
+              <Label htmlFor="odo" className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Final Odometer</Label>
+              <Input id="odo" type="number" value={finalOdometer} onChange={e => setFinalOdometer(parseInt(e.target.value))} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary transition-all cursor-none font-mono tracking-widest" />
             </div>
           </div>
-          <DialogFooter>
-            <Button onClick={handleComplete}>Mark Completed</Button>
+          <DialogFooter className="mt-8 pt-6 border-t border-white/10">
+            <Button onClick={handleComplete} className="w-full bg-green-500 hover:bg-green-400 text-black font-black uppercase tracking-[0.2em] transition-all h-12 cursor-none">Acknowledge</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
-      {/* Fuel Log Dialog */}
       <Dialog open={isFuelDialogOpen} onOpenChange={setIsFuelDialogOpen}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Log Fuel Expense</DialogTitle>
+        <DialogContent className="sm:max-w-[425px] glass border border-primary/20 bg-black/90 p-8 rounded-3xl cursor-none">
+          <DialogHeader className="mb-6">
+            <DialogTitle className="text-2xl font-black text-white uppercase tracking-tighter text-glow">Log Fuel Expense</DialogTitle>
           </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="liters" className="text-right">Liters</Label>
-              <Input id="liters" type="number" value={fuelData.liters} onChange={e => setFuelData({ ...fuelData, liters: parseFloat(e.target.value) })} className="col-span-3" />
+          <div className="grid gap-6">
+            <div className="space-y-2">
+              <Label htmlFor="liters" className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Volume (Liters)</Label>
+              <Input id="liters" type="number" value={fuelData.liters} onChange={e => setFuelData({ ...fuelData, liters: parseFloat(e.target.value) })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary transition-all cursor-none font-mono" />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="cost" className="text-right">Total Cost</Label>
-              <Input id="cost" type="number" value={fuelData.cost} onChange={e => setFuelData({ ...fuelData, cost: parseFloat(e.target.value) })} className="col-span-3" />
+            <div className="space-y-2">
+              <Label htmlFor="cost" className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Total Cost ($)</Label>
+              <Input id="cost" type="number" value={fuelData.cost} onChange={e => setFuelData({ ...fuelData, cost: parseFloat(e.target.value) })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary transition-all cursor-none font-mono" />
             </div>
           </div>
-          <DialogFooter>
-            <Button onClick={handleAddFuel}>Save Fuel Log</Button>
+          <DialogFooter className="mt-8 pt-6 border-t border-white/10">
+            <Button onClick={handleAddFuel} className="w-full bg-orange-500 hover:bg-orange-400 text-black font-black uppercase tracking-[0.2em] transition-all h-12 cursor-none">Submit Log</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

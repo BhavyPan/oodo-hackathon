@@ -32,9 +32,9 @@ const statusIcon = {
 };
 
 const statusColor = {
-  Scheduled: "status-on-trip",
-  "In Progress": "status-in-shop",
-  Completed: "status-available",
+  Scheduled: "status-on-trip text-glow font-bold",
+  "In Progress": "status-in-shop text-glow font-bold",
+  Completed: "status-available text-glow font-bold",
 };
 
 export default function Maintenance() {
@@ -122,263 +122,373 @@ export default function Maintenance() {
   };
 
   return (
-    <div className="p-6 lg:p-8 space-y-6">
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-white uppercase tracking-wider">Maintenance & Administration</h1>
-          <p className="text-muted-foreground mt-1 text-sm uppercase tracking-widest">Preventative fleet tracking and manager utilities</p>
+    <div className="pb-40 cursor-none">
+      {/* Mini Hero Header */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="pt-12 pb-20 px-4 md:px-8 text-center relative"
+      >
+        <div className="flex items-center justify-center gap-4 mb-4">
+          <div className="h-px w-12 bg-primary hidden md:block"></div>
+          <p className="text-primary font-black uppercase tracking-[0.3em] text-[10px] md:text-sm text-glow">System Configuration</p>
+          <div className="h-px w-12 bg-primary hidden md:block"></div>
         </div>
+        <h1 className="text-5xl md:text-7xl font-black text-white uppercase tracking-tighter text-glow">
+          Maintenance & Admin
+        </h1>
+        <p className="mt-4 text-white/50 text-xs md:text-sm font-bold tracking-widest uppercase max-w-xl mx-auto">
+          Preventative fleet tracking, service logging, and administrative utilities.
+        </p>
       </motion.div>
 
-      <Tabs defaultValue="service-logs" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 md:w-[400px]">
-          <TabsTrigger value="service-logs">Service Logs</TabsTrigger>
-          {user?.role === "Manager" && (
-            <TabsTrigger value="fleet-admin">Fleet Administration</TabsTrigger>
-          )}
-        </TabsList>
-
-        <TabsContent value="service-logs" className="space-y-4 pt-4">
-          <div className="flex justify-end">
-            <Button onClick={() => setIsServiceDialogOpen(true)} className="gap-2 bg-primary text-black hover:bg-primary/90 font-bold uppercase tracking-wider">
-              <Plus className="h-4 w-4" /> Log Service
-            </Button>
+      <div className="max-w-[1600px] mx-auto px-4 md:px-8 relative z-10">
+        <Tabs defaultValue="service-logs" className="w-full">
+          <div className="flex justify-center mb-12">
+            <TabsList className="grid w-full max-w-md grid-cols-2 bg-black/50 border border-white/10 rounded-2xl p-1 h-auto cursor-none">
+              <TabsTrigger
+                value="service-logs"
+                className="rounded-xl py-3 text-xs font-black uppercase tracking-[0.2em] data-[state=active]:bg-primary data-[state=active]:text-black transition-all cursor-none"
+              >
+                Service Logs
+              </TabsTrigger>
+              {user?.role === "Manager" && (
+                <TabsTrigger
+                  value="fleet-admin"
+                  className="rounded-xl py-3 text-xs font-black uppercase tracking-[0.2em] data-[state=active]:bg-primary data-[state=active]:text-black transition-all cursor-none"
+                >
+                  Administration
+                </TabsTrigger>
+              )}
+            </TabsList>
           </div>
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="rounded-xl border border-white/10 glass overflow-hidden active-reflection-border">
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="bg-white/5 text-white uppercase tracking-wider text-xs">
-                    <th className="px-5 py-3.5 text-left font-medium">Vehicle</th>
-                    <th className="px-5 py-3.5 text-left font-medium">Service Type</th>
-                    <th className="px-5 py-3.5 text-left font-medium">Description</th>
-                    <th className="px-5 py-3.5 text-left font-medium">Cost</th>
-                    <th className="px-5 py-3.5 text-left font-medium">Date</th>
-                    <th className="px-5 py-3.5 text-left font-medium">Status</th>
-                    <th className="px-5 py-3.5 text-right font-medium">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {maintenanceLogs.map((log, i) => (
-                    <motion.tr
-                      key={log.id}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: i * 0.03 }}
-                      className="border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors"
-                    >
-                      <td className="px-5 py-4 font-medium text-white">{getVehicleName(log.vehicleId)}</td>
-                      <td className="px-5 py-4 text-muted-foreground">{log.type}</td>
-                      <td className="px-5 py-4 text-muted-foreground max-w-[240px] truncate">{log.description}</td>
-                      <td className="px-5 py-4 font-bold text-white tracking-widest text-glow">${log.cost.toLocaleString()}</td>
-                      <td className="px-5 py-4 text-muted-foreground text-xs">{new Date(log.date).toLocaleDateString()}</td>
-                      <td className="px-5 py-4">
-                        <span className="flex items-center gap-1.5">
-                          {statusIcon[log.status]}
-                          <span className={statusColor[log.status]}>{log.status}</span>
-                        </span>
-                      </td>
-                      <td className="px-5 py-4 text-right">
-                        {log.status !== "Completed" && (
-                          <Button variant="outline" size="sm" onClick={() => {
-                            completeMaintenanceLog(log.id);
-                            toast({ title: "Service Completed", description: "Vehicle is now Available." });
-                          }}>
-                            <CheckCircle2 className="h-4 w-4 mr-1 text-success" /> Complete
-                          </Button>
-                        )}
-                      </td>
-                    </motion.tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </motion.div>
-        </TabsContent>
 
-        {user?.role === "Manager" && (
-          <TabsContent value="fleet-admin" className="space-y-8 pt-4">
-            {/* Driver Management */}
-            <div>
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold flex items-center gap-2"><UsersIcon className="h-5 w-5" /> Driver Roster Management</h3>
-                <Button onClick={() => { setIsEditingDriver(false); setDriverFormData({ name: "", phone: "", licenseExpiry: new Date().toISOString().split("T")[0], safetyScore: 100, status: "Off Duty" }); setIsDriverDialogOpen(true); }} size="sm" variant="outline" className="gap-2">
-                  <Plus className="h-4 w-4" /> Hire Driver
-                </Button>
-              </div>
-              <div className="rounded-xl border border-white/10 glass overflow-hidden active-reflection-border">
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="bg-white/5 text-white uppercase tracking-wider text-xs">
-                        <th className="px-5 py-3.5 text-left font-medium">Name</th>
-                        <th className="px-5 py-3.5 text-left font-medium">Phone</th>
-                        <th className="px-5 py-3.5 text-left font-medium">License Expiry</th>
-                        <th className="px-5 py-3.5 text-left font-medium">Status</th>
-                        <th className="px-5 py-3.5 text-right font-medium">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {drivers.map(driver => (
-                        <tr key={driver.id} className="border-b border-white/5 last:border-0 hover:bg-white/5">
-                          <td className="px-5 py-4 font-medium text-white">{driver.name}</td>
-                          <td className="px-5 py-4 text-primary">{driver.phone}</td>
-                          <td className="px-5 py-4 text-muted-foreground">{new Date(driver.licenseExpiry).toLocaleDateString()}</td>
-                          <td className="px-5 py-4">{driver.status}</td>
-                          <td className="px-5 py-4 text-right">
-                            <div className="flex items-center justify-end gap-2">
-                              <Button variant="ghost" size="icon" onClick={() => openEditDriver(driver)}>
-                                <Edit className="h-4 w-4 text-muted-foreground" />
-                              </Button>
-                              <Button variant="ghost" size="icon" onClick={() => handleFireDriver(driver.id, driver.name)}>
-                                <Trash2 className="h-4 w-4 text-destructive" />
-                              </Button>
-                            </div>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
+          {/* SERVICE LOGS TAB */}
+          <TabsContent value="service-logs" className="space-y-8 mt-0 focus-visible:outline-none focus-visible:ring-0">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.6 }}
+              className="flex justify-between items-center glass p-6 rounded-3xl border-white/5 active-reflection-border"
+            >
+              <h2 className="text-xl font-black text-white uppercase tracking-widest text-glow">Maintenance Records</h2>
+              <Button
+                onClick={() => setIsServiceDialogOpen(true)}
+                className="gap-3 bg-primary text-black font-black uppercase tracking-[0.2em] hover:bg-primary/80 transition-all rounded-xl h-[46px] cursor-none shadow-[0_0_15px_rgba(204,255,0,0.3)]"
+              >
+                <Plus className="h-5 w-5" /> Log Service
+              </Button>
+            </motion.div>
 
-            {/* Vehicle Status Override */}
-            <div>
-              <h3 className="text-lg font-semibold flex items-center gap-2 mb-4"><ShieldAlert className="h-5 w-5" /> Vehicle Status Override</h3>
-              <div className="rounded-xl border border-white/10 glass overflow-hidden active-reflection-border">
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="bg-white/5 text-white uppercase tracking-wider text-xs">
-                        <th className="px-5 py-3.5 text-left font-medium">Vehicle</th>
-                        <th className="px-5 py-3.5 text-left font-medium">License Plate</th>
-                        <th className="px-5 py-3.5 text-left font-medium">Current Status</th>
-                        <th className="px-5 py-3.5 text-left font-medium w-[200px]">Override Value</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {vehicles.map(v => (
-                        <tr key={v.id} className="border-b border-white/5 last:border-0 hover:bg-white/5">
-                          <td className="px-5 py-4 font-medium text-white">{v.name}</td>
-                          <td className="px-5 py-4 text-primary">{v.licensePlate}</td>
-                          <td className="px-5 py-4 text-muted-foreground">{v.status}</td>
-                          <td className="px-5 py-4">
-                            <Select
-                              value={v.status}
-                              onValueChange={(status: VehicleStatus) => {
-                                updateVehicleStatus(v.id, status);
-                                toast({ title: "Status Updated", description: `${v.name} forced to ${status}.` });
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.8 }}
+              className="rounded-[2.5rem] glass p-8 active-reflection-border group relative overflow-hidden"
+            >
+              <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-warning/5 rounded-full blur-[100px] pointer-events-none z-0" />
+
+              <div className="overflow-x-auto relative z-10 w-full">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b-2 border-white/10 text-white/40">
+                      <th className="px-6 py-6 text-left font-black uppercase tracking-[0.2em] text-[10px]">Asset</th>
+                      <th className="px-6 py-6 text-left font-black uppercase tracking-[0.2em] text-[10px]">Service Type</th>
+                      <th className="px-6 py-6 text-left font-black uppercase tracking-[0.2em] text-[10px] hidden md:table-cell">Details</th>
+                      <th className="px-6 py-6 text-left font-black uppercase tracking-[0.2em] text-[10px]">Cost</th>
+                      <th className="px-6 py-6 text-left font-black uppercase tracking-[0.2em] text-[10px] hidden sm:table-cell">Timestamp</th>
+                      <th className="px-6 py-6 text-left font-black uppercase tracking-[0.2em] text-[10px]">Status</th>
+                      <th className="px-6 py-6 text-right font-black uppercase tracking-[0.2em] text-[10px]">Command</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-white/5">
+                    {maintenanceLogs.map((log, i) => (
+                      <motion.tr
+                        key={log.id}
+                        initial={{ opacity: 0, x: -20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: (i % 8) * 0.05, duration: 0.4 }}
+                        className="hover:bg-white/5 transition-colors cursor-none"
+                      >
+                        <td className="px-6 py-6 font-bold text-white uppercase tracking-widest">{getVehicleName(log.vehicleId)}</td>
+                        <td className="px-6 py-6 text-white/80 font-mono text-xs uppercase tracking-widest">{log.type}</td>
+                        <td className="px-6 py-6 text-white/40 max-w-[200px] truncate hidden md:table-cell">{log.description}</td>
+                        <td className="px-6 py-6 font-black text-white text-lg tracking-tighter text-glow">${log.cost.toLocaleString()}</td>
+                        <td className="px-6 py-6 text-white/40 font-mono text-xs hidden sm:table-cell tracking-widest">{new Date(log.date).toLocaleDateString()}</td>
+                        <td className="px-6 py-6">
+                          <div className="flex items-center gap-2 bg-black/40 px-3 py-1.5 rounded-full w-fit border border-white/5">
+                            {statusIcon[log.status]}
+                            <span className={`uppercase text-[10px] tracking-widest ${statusColor[log.status]}`}>{log.status}</span>
+                          </div>
+                        </td>
+                        <td className="px-6 py-6 text-right">
+                          {log.status !== "Completed" && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => {
+                                completeMaintenanceLog(log.id);
+                                toast({ title: "Service Completed", description: "Vehicle is now Available." });
                               }}
+                              className="cursor-none border-success/30 text-success hover:bg-success/20 hover:text-success uppercase tracking-widest text-[10px] font-bold"
                             >
-                              <SelectTrigger className="w-[160px] h-8 text-xs">
-                                <SelectValue />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="Available">Available</SelectItem>
-                                <SelectItem value="On Trip">On Trip</SelectItem>
-                                <SelectItem value="In Shop">In Shop</SelectItem>
-                                <SelectItem value="Retired">Retired</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                              <CheckCircle2 className="h-3 w-3 mr-2" /> Complete
+                            </Button>
+                          )}
+                        </td>
+                      </motion.tr>
+                    ))}
+                  </tbody>
+                </table>
               </div>
-            </div>
+            </motion.div>
           </TabsContent>
-        )}
-      </Tabs>
 
-      {/* Add Service Log Dialog */}
+          {/* FLEET ADMIN TAB */}
+          {user?.role === "Manager" && (
+            <TabsContent value="fleet-admin" className="space-y-12 mt-0 focus-visible:outline-none focus-visible:ring-0">
+
+              {/* Driver Management Section */}
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                className="space-y-6"
+              >
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 glass p-6 rounded-3xl border-white/5 active-reflection-border">
+                  <h3 className="text-xl font-black text-white uppercase tracking-widest text-glow flex items-center gap-3">
+                    <UsersIcon className="h-6 w-6 text-primary" /> Personnel Management
+                  </h3>
+                  <Button
+                    onClick={() => { setIsEditingDriver(false); setDriverFormData({ name: "", phone: "", licenseExpiry: new Date().toISOString().split("T")[0], safetyScore: 100, status: "Off Duty" }); setIsDriverDialogOpen(true); }}
+                    className="gap-3 bg-white/10 text-white hover:bg-white/20 font-black uppercase tracking-[0.2em] transition-all rounded-xl h-[46px] cursor-none border border-white/10 w-full sm:w-auto"
+                  >
+                    <Plus className="h-5 w-5" /> Hire Operator
+                  </Button>
+                </div>
+
+                <div className="rounded-[2.5rem] glass p-8 active-reflection-border relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-primary/5 rounded-full blur-[100px] pointer-events-none z-0" />
+                  <div className="overflow-x-auto relative z-10 w-full">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="border-b-2 border-white/10 text-white/40">
+                          <th className="px-6 py-6 text-left font-black uppercase tracking-[0.2em] text-[10px]">Designation</th>
+                          <th className="px-6 py-6 text-left font-black uppercase tracking-[0.2em] text-[10px]">Comms Link</th>
+                          <th className="px-6 py-6 text-left font-black uppercase tracking-[0.2em] text-[10px]">Certification Expiry</th>
+                          <th className="px-6 py-6 text-left font-black uppercase tracking-[0.2em] text-[10px]">Status</th>
+                          <th className="px-6 py-6 text-right font-black uppercase tracking-[0.2em] text-[10px]">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-white/5">
+                        {drivers.map((driver, i) => (
+                          <motion.tr
+                            key={driver.id}
+                            initial={{ opacity: 0, x: -20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: (i % 8) * 0.05, duration: 0.4 }}
+                            className="hover:bg-white/5 transition-colors cursor-none"
+                          >
+                            <td className="px-6 py-6 font-bold text-white uppercase tracking-widest">{driver.name}</td>
+                            <td className="px-6 py-6 text-primary/80 font-mono text-xs">{driver.phone}</td>
+                            <td className="px-6 py-6 text-white/60 font-mono text-xs tracking-widest">{new Date(driver.licenseExpiry).toLocaleDateString()}</td>
+                            <td className="px-6 py-6"><span className="uppercase text-[10px] tracking-widest font-bold text-white/80">{driver.status}</span></td>
+                            <td className="px-6 py-6 text-right">
+                              <div className="flex items-center justify-end gap-3">
+                                <Button variant="ghost" size="icon" onClick={() => openEditDriver(driver)} className="cursor-none hover:bg-white/10 hover:text-white text-white/40 rounded-full">
+                                  <Edit className="h-4 w-4" />
+                                </Button>
+                                <Button variant="ghost" size="icon" onClick={() => handleFireDriver(driver.id, driver.name)} className="cursor-none hover:bg-destructive/20 hover:text-destructive text-destructive/60 rounded-full">
+                                  <Trash2 className="h-4 w-4" />
+                                </Button>
+                              </div>
+                            </td>
+                          </motion.tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </motion.div>
+
+              {/* Vehicle Status Override Section */}
+              <motion.div
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                className="space-y-6"
+              >
+                <div className="glass p-6 rounded-3xl border-white/5 active-reflection-border">
+                  <h3 className="text-xl font-black text-white uppercase tracking-widest text-glow flex items-center gap-3">
+                    <ShieldAlert className="h-6 w-6 text-warning" /> Asset Override Controls
+                  </h3>
+                  <p className="mt-2 text-xs text-white/40 uppercase tracking-widest font-bold">Manual override for vehicle state management.</p>
+                </div>
+
+                <div className="rounded-[2.5rem] glass p-8 active-reflection-border relative overflow-hidden">
+                  <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-warning/5 rounded-full blur-[100px] pointer-events-none z-0" />
+                  <div className="overflow-x-auto relative z-10 w-full">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="border-b-2 border-white/10 text-white/40">
+                          <th className="px-6 py-6 text-left font-black uppercase tracking-[0.2em] text-[10px]">Asset Designation</th>
+                          <th className="px-6 py-6 text-left font-black uppercase tracking-[0.2em] text-[10px]">Plate Registration</th>
+                          <th className="px-6 py-6 text-left font-black uppercase tracking-[0.2em] text-[10px]">Current Status</th>
+                          <th className="px-6 py-6 text-left font-black uppercase tracking-[0.2em] text-[10px] w-[250px]">Manual Override</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-white/5">
+                        {vehicles.map((v, i) => (
+                          <motion.tr
+                            key={v.id}
+                            initial={{ opacity: 0, x: -20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: (i % 8) * 0.05, duration: 0.4 }}
+                            className="hover:bg-white/5 transition-colors cursor-none"
+                          >
+                            <td className="px-6 py-6 font-bold text-white uppercase tracking-widest">{v.name}</td>
+                            <td className="px-6 py-6 text-primary/80 font-mono text-xs tracking-widest">{v.licensePlate}</td>
+                            <td className="px-6 py-6">
+                              <span className={`uppercase text-[10px] tracking-widest font-bold ${v.status === "Available" ? "text-success" :
+                                  v.status === "On Trip" ? "text-info" :
+                                    v.status === "In Shop" ? "text-warning" : "text-destructive"
+                                }`}>
+                                {v.status}
+                              </span>
+                            </td>
+                            <td className="px-6 py-6">
+                              <Select
+                                value={v.status}
+                                onValueChange={(status: VehicleStatus) => {
+                                  updateVehicleStatus(v.id, status);
+                                  toast({ title: "Status Overridden", description: `${v.name} forced to ${status}.` });
+                                }}
+                              >
+                                <SelectTrigger className="w-full bg-black/50 border-white/10 text-white text-xs uppercase tracking-widest font-bold cursor-none focus:ring-warning focus:border-warning">
+                                  <SelectValue />
+                                </SelectTrigger>
+                                <SelectContent className="bg-black/90 border-white/10 backdrop-blur-xl cursor-none">
+                                  <SelectItem value="Available" className="cursor-none uppercase tracking-widest text-[10px] font-bold text-white hover:text-black">Available</SelectItem>
+                                  <SelectItem value="On Trip" className="cursor-none uppercase tracking-widest text-[10px] font-bold text-white hover:text-black">On Trip</SelectItem>
+                                  <SelectItem value="In Shop" className="cursor-none uppercase tracking-widest text-[10px] font-bold text-white hover:text-black">In Shop</SelectItem>
+                                  <SelectItem value="Retired" className="cursor-none uppercase tracking-widest text-[10px] font-bold text-white hover:text-black">Retired</SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </td>
+                          </motion.tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </motion.div>
+            </TabsContent>
+          )}
+        </Tabs>
+      </div>
+
+      {/* Dialogs updated for cinematic style */}
       <Dialog open={isServiceDialogOpen} onOpenChange={setIsServiceDialogOpen}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader><DialogTitle>Log New Service</DialogTitle></DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label className="text-right">Vehicle</Label>
+        <DialogContent className="sm:max-w-[425px] glass border border-primary/20 bg-black/90 p-8 rounded-3xl cursor-none">
+          <DialogHeader className="mb-6">
+            <DialogTitle className="text-2xl font-black text-white uppercase tracking-tighter text-glow">Log New Service</DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-6">
+            <div className="space-y-2">
+              <Label className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Target Asset</Label>
               <Select value={serviceFormData.vehicleId} onValueChange={(v) => setServiceFormData({ ...serviceFormData, vehicleId: v })}>
-                <SelectTrigger className="col-span-3">
-                  <SelectValue placeholder="Select Vehicle" />
+                <SelectTrigger className="bg-black/50 border-white/10 text-white focus:ring-primary cursor-none uppercase text-xs tracking-widest">
+                  <SelectValue placeholder="Select Asset" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-black/90 border-white/10 text-white backdrop-blur-xl cursor-none">
                   {vehicles.filter(v => v.status !== "Retired" && v.status !== "On Trip").map(v => (
-                    <SelectItem key={v.id} value={v.id}>{v.name} ({v.licensePlate}) - {v.status}</SelectItem>
+                    <SelectItem key={v.id} value={v.id} className="cursor-none hover:bg-primary hover:text-black uppercase text-xs tracking-widest">{v.name} - {v.status}</SelectItem>
                   ))}
                   {vehicles.filter(v => v.status !== "Retired" && v.status !== "On Trip").length === 0 && (
-                    <SelectItem value="none" disabled>No vehicles available</SelectItem>
+                    <SelectItem value="none" disabled className="text-white/40 uppercase text-xs">No valid assets</SelectItem>
                   )}
                 </SelectContent>
               </Select>
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="type" className="text-right">Type</Label>
-              <Input id="type" placeholder="e.g. Oil Change" value={serviceFormData.type} onChange={e => setServiceFormData({ ...serviceFormData, type: e.target.value })} className="col-span-3" />
+            <div className="space-y-2">
+              <Label htmlFor="type" className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Service Type</Label>
+              <Input id="type" placeholder="e.g. Oil Change" value={serviceFormData.type} onChange={e => setServiceFormData({ ...serviceFormData, type: e.target.value })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary transition-all cursor-none" />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="desc" className="text-right">Description</Label>
-              <Input id="desc" value={serviceFormData.description} onChange={e => setServiceFormData({ ...serviceFormData, description: e.target.value })} className="col-span-3" />
+            <div className="space-y-2">
+              <Label htmlFor="desc" className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Details</Label>
+              <Input id="desc" value={serviceFormData.description} onChange={e => setServiceFormData({ ...serviceFormData, description: e.target.value })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary transition-all cursor-none" />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="cost" className="text-right">Cost ($)</Label>
-              <Input id="cost" type="number" value={serviceFormData.cost} onChange={e => setServiceFormData({ ...serviceFormData, cost: parseInt(e.target.value) })} className="col-span-3" />
-            </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="date" className="text-right">Date</Label>
-              <Input id="date" type="date" value={serviceFormData.date} onChange={e => setServiceFormData({ ...serviceFormData, date: e.target.value })} className="col-span-3" />
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="cost" className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Total Cost ($)</Label>
+                <Input id="cost" type="number" value={serviceFormData.cost} onChange={e => setServiceFormData({ ...serviceFormData, cost: parseInt(e.target.value) })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary transition-all cursor-none font-mono" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="date" className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Date</Label>
+                <Input id="date" type="date" value={serviceFormData.date} onChange={e => setServiceFormData({ ...serviceFormData, date: e.target.value })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary transition-all cursor-none font-mono text-sm" />
+              </div>
             </div>
           </div>
-          <DialogFooter><Button onClick={handleCreateService}>Save Service Log</Button></DialogFooter>
+          <DialogFooter className="mt-8 pt-6 border-t border-white/10">
+            <Button onClick={handleCreateService} className="w-full bg-primary hover:bg-primary/80 text-black font-black uppercase tracking-[0.2em] transition-all h-12 cursor-none">Commit Record</Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
 
-      {/* Add/Edit Driver Dialog */}
       <Dialog open={isDriverDialogOpen} onOpenChange={setIsDriverDialogOpen}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>{isEditingDriver ? "Edit Driver Profile" : "Hire New Driver"}</DialogTitle>
-            <DialogDescription>Manage performance, compliance, and contact details.</DialogDescription>
+        <DialogContent className="sm:max-w-[425px] glass border border-primary/20 bg-black/90 p-8 rounded-3xl cursor-none">
+          <DialogHeader className="mb-6">
+            <DialogTitle className="text-2xl font-black text-white uppercase tracking-tighter text-glow">{isEditingDriver ? "Update Profile" : "Onboard Personnel"}</DialogTitle>
+            <DialogDescription className="text-white/40 uppercase tracking-widest text-[10px] font-bold mt-2">Manage credentials and operational status.</DialogDescription>
           </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="d_name" className="text-right">Full Name</Label>
-              <Input id="d_name" value={driverFormData.name} onChange={e => setDriverFormData({ ...driverFormData, name: e.target.value })} className="col-span-3" />
+          <div className="grid gap-6">
+            <div className="space-y-2">
+              <Label htmlFor="d_name" className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Official Name</Label>
+              <Input id="d_name" value={driverFormData.name} onChange={e => setDriverFormData({ ...driverFormData, name: e.target.value })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary transition-all cursor-none" />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="d_phone" className="text-right">Phone</Label>
-              <Input id="d_phone" value={driverFormData.phone} onChange={e => setDriverFormData({ ...driverFormData, phone: e.target.value })} className="col-span-3" />
+            <div className="space-y-2">
+              <Label htmlFor="d_phone" className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Comms Link (Phone)</Label>
+              <Input id="d_phone" value={driverFormData.phone} onChange={e => setDriverFormData({ ...driverFormData, phone: e.target.value })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary transition-all cursor-none font-mono tracking-widest" />
             </div>
-            <div className="grid grid-cols-4 items-center gap-4">
-              <Label htmlFor="d_expiry" className="text-right">License Expiry</Label>
-              <Input id="d_expiry" type="date" value={driverFormData.licenseExpiry} onChange={e => setDriverFormData({ ...driverFormData, licenseExpiry: e.target.value })} className="col-span-3" />
+            <div className="space-y-2">
+              <Label htmlFor="d_expiry" className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Certification Expiry</Label>
+              <Input id="d_expiry" type="date" value={driverFormData.licenseExpiry} onChange={e => setDriverFormData({ ...driverFormData, licenseExpiry: e.target.value })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary transition-all cursor-none font-mono text-sm" />
             </div>
             {isEditingDriver && (
-              <>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="d_score" className="text-right">Safety Score</Label>
-                  <Input id="d_score" type="number" min={0} max={100} value={driverFormData.safetyScore} onChange={e => setDriverFormData({ ...driverFormData, safetyScore: parseInt(e.target.value) })} className="col-span-3" />
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="d_score" className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Safety Score</Label>
+                  <Input id="d_score" type="number" min={0} max={100} value={driverFormData.safetyScore} onChange={e => setDriverFormData({ ...driverFormData, safetyScore: parseInt(e.target.value) })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary transition-all cursor-none font-mono" />
                 </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="d_status" className="text-right">Status</Label>
+                <div className="space-y-2">
+                  <Label htmlFor="d_status" className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Status Force</Label>
                   <Select value={driverFormData.status} onValueChange={(v) => setDriverFormData({ ...driverFormData, status: v as DriverStatus })}>
-                    <SelectTrigger className="col-span-3">
-                      <SelectValue placeholder="Select Status" />
+                    <SelectTrigger className="bg-black/50 border-white/10 text-white focus:ring-primary cursor-none uppercase text-xs tracking-widest">
+                      <SelectValue placeholder="Status" />
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="On Duty">On Duty</SelectItem>
-                      <SelectItem value="Off Duty">Off Duty</SelectItem>
-                      <SelectItem value="Suspended">Suspended</SelectItem>
-                      <SelectItem value="On Trip">On Trip</SelectItem>
+                    <SelectContent className="bg-black/90 border-white/10 text-white backdrop-blur-xl cursor-none">
+                      <SelectItem value="On Duty" className="cursor-none hover:bg-primary hover:text-black uppercase text-[10px] tracking-widest font-bold">On Duty</SelectItem>
+                      <SelectItem value="Off Duty" className="cursor-none hover:bg-primary hover:text-black uppercase text-[10px] tracking-widest font-bold">Off Duty</SelectItem>
+                      <SelectItem value="Suspended" className="cursor-none hover:bg-primary hover:text-black uppercase text-[10px] tracking-widest font-bold">Suspended</SelectItem>
+                      <SelectItem value="On Trip" className="cursor-none hover:bg-primary hover:text-black uppercase text-[10px] tracking-widest font-bold" disabled>On Trip</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
-              </>
+              </div>
             )}
           </div>
-          <DialogFooter><Button onClick={handleSaveDriver}>{isEditingDriver ? "Update Profile" : "Hire Driver"}</Button></DialogFooter>
+          <DialogFooter className="mt-8 pt-6 border-t border-white/10">
+            <Button onClick={handleSaveDriver} className="w-full bg-primary hover:bg-primary/80 text-black font-black uppercase tracking-[0.2em] transition-all h-12 cursor-none text-glow shadow-[0_0_15px_rgba(204,255,0,0.2)]">
+              {isEditingDriver ? "Finalize Update" : "Approve Hiring"}
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>

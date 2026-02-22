@@ -14,67 +14,107 @@ export default function Drivers() {
   };
 
   return (
-    <div className="p-6 lg:p-8 space-y-6">
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-        <h1 className="text-2xl font-bold text-white uppercase tracking-wider">Driver Profiles</h1>
-        <p className="text-muted-foreground mt-1 text-sm uppercase tracking-widest">Performance, compliance, and safety management</p>
+    <div className="pb-40 cursor-none">
+      {/* Mini Hero Header */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+        className="pt-12 pb-20 px-4 md:px-8 text-center relative"
+      >
+        <div className="flex items-center justify-center gap-4 mb-4">
+          <div className="h-px w-12 bg-primary hidden md:block"></div>
+          <p className="text-primary font-black uppercase tracking-[0.3em] text-[10px] md:text-sm text-glow">Personnel Database</p>
+          <div className="h-px w-12 bg-primary hidden md:block"></div>
+        </div>
+        <h1 className="text-5xl md:text-7xl font-black text-white uppercase tracking-tighter text-glow">
+          Driver Profiles
+        </h1>
+        <p className="mt-4 text-white/50 text-xs md:text-sm font-bold tracking-widest uppercase max-w-xl mx-auto">
+          Performance, compliance, and safety management for all licensed operators.
+        </p>
       </motion.div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-        {drivers.map((d, i) => (
-          <motion.div
-            key={d.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.05 }}
-            className="rounded-xl border border-white/10 glass p-5 space-y-4 active-reflection-border"
-          >
-            <div className="flex items-start justify-between">
-              <div>
-                <h3 className="font-semibold text-white uppercase tracking-wider">{d.name}</h3>
-                <p className="text-xs text-primary mt-0.5">{d.phone}</p>
-              </div>
-              <DriverStatusBadge status={d.status} />
-            </div>
+      <div className="max-w-[1600px] mx-auto px-4 md:px-8 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+          {drivers.map((d, i) => (
+            <motion.div
+              key={d.id}
+              initial={{ opacity: 0, y: 50, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ delay: (i % 6) * 0.1, duration: 0.6, ease: "easeOut" }}
+              whileHover={{ scale: 1.02, y: -5 }}
+              className="rounded-[3rem] border border-white/5 glass p-8 md:p-10 space-y-8 active-reflection-border group relative overflow-hidden cursor-none"
+            >
+              <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
-            <div className="flex items-center gap-2">
-              <Shield className={`h-4 w-4 ${d.safetyScore >= 80 ? "text-success" : d.safetyScore >= 60 ? "text-warning" : "text-destructive"}`} />
-              <div className="flex-1">
-                <div className="flex justify-between text-xs mb-1 uppercase tracking-wider">
-                  <span className="text-muted-foreground">Safety Score</span>
-                  <span className="font-bold text-white tracking-widest text-glow">{d.safetyScore}/100</span>
+              <div className="flex items-start justify-between relative z-10">
+                <div>
+                  <h3 className="text-3xl font-black text-white uppercase tracking-tighter text-glow mb-1">{d.name}</h3>
+                  <p className="text-xs text-primary/80 font-mono tracking-widest uppercase">{d.phone}</p>
                 </div>
-                <div className="h-1.5 rounded-full bg-white/10 overflow-hidden">
-                  <div
-                    className={`h-full rounded-full transition-all ${d.safetyScore >= 80 ? "bg-success shadow-[0_0_10px_#10b981cc]" : d.safetyScore >= 60 ? "bg-warning" : "bg-destructive"}`}
-                    style={{ width: `${d.safetyScore}%` }}
+                <div className="scale-110 origin-top-right">
+                  <DriverStatusBadge status={d.status} />
+                </div>
+              </div>
+
+              <div className="relative z-10">
+                <div className="flex justify-between items-end mb-3">
+                  <div className="flex items-center gap-2">
+                    <Shield className={`h-5 w-5 ${d.safetyScore >= 80 ? "text-success" : d.safetyScore >= 60 ? "text-warning" : "text-destructive"}`} />
+                    <span className="text-white/60 text-xs uppercase tracking-widest font-bold">Safety Rating</span>
+                  </div>
+                  <span className="font-black text-white tracking-tighter text-3xl text-glow leading-none">{d.safetyScore}<span className="text-white/40 text-sm tracking-widest inline-block ml-1">/100</span></span>
+                </div>
+                <div className="h-2 rounded-full bg-white/5 overflow-hidden ring-1 ring-white/10">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    whileInView={{ width: `${d.safetyScore}%` }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
+                    className={`h-full rounded-full transition-all ${d.safetyScore >= 80 ? "bg-success shadow-[0_0_15px_#10b981]" : d.safetyScore >= 60 ? "bg-warning" : "bg-destructive"}`}
                   />
                 </div>
               </div>
-            </div>
 
-            <div className="grid grid-cols-2 gap-3 text-xs uppercase tracking-wider">
-              <div>
-                <p className="text-muted-foreground">Trips Completed</p>
-                <p className="font-bold text-white mt-0.5 tracking-widest text-glow">{d.tripsCompleted}</p>
+              <div className="grid grid-cols-2 gap-6 relative z-10">
+                <div className="bg-black/30 rounded-2xl p-5 border border-white/5">
+                  <p className="text-white/40 text-[10px] uppercase tracking-[0.2em] font-bold mb-2">Trips Completed</p>
+                  <p className="font-black text-white text-4xl tracking-tighter text-glow">{d.tripsCompleted}</p>
+                </div>
+                <div className="bg-black/30 rounded-2xl p-5 border border-white/5">
+                  <p className="text-white/40 text-[10px] uppercase tracking-[0.2em] font-bold mb-2">License Class</p>
+                  <p className="font-bold text-white/80 mt-0.5 tracking-widest text-sm uppercase">{d.licenseCategories.join(", ")}</p>
+                </div>
               </div>
-              <div>
-                <p className="text-muted-foreground">License Categories</p>
-                <p className="font-bold text-white mt-0.5 tracking-widest">{d.licenseCategories.join(", ")}</p>
-              </div>
-            </div>
 
-            <div className={`flex items-center gap-1.5 text-xs rounded-lg px-3 py-2 ${isExpired(d.licenseExpiry) ? "bg-destructive/10 text-destructive" :
-              isExpiringSoon(d.licenseExpiry) ? "bg-warning/10 text-warning" :
-                "bg-success/10 text-success"
-              }`}>
-              {(isExpired(d.licenseExpiry) || isExpiringSoon(d.licenseExpiry)) && <AlertCircle className="h-3.5 w-3.5" />}
-              <span className="font-medium">
-                License {isExpired(d.licenseExpiry) ? "Expired" : "Expires"}: {new Date(d.licenseExpiry).toLocaleDateString()}
-              </span>
-            </div>
-          </motion.div>
-        ))}
+              <div className={`flex items-center gap-3 text-xs rounded-2xl p-5 border relative z-10 ${isExpired(d.licenseExpiry) ? "bg-destructive/10 text-destructive border-destructive/20" :
+                isExpiringSoon(d.licenseExpiry) ? "bg-warning/10 text-warning border-warning/20" :
+                  "bg-success/10 text-success border-success/20"
+                }`}>
+                {(isExpired(d.licenseExpiry) || isExpiringSoon(d.licenseExpiry)) && (
+                  <div className="bg-background rounded-full p-2 shadow-lg">
+                    <AlertCircle className="h-4 w-4" />
+                  </div>
+                )}
+                {!isExpired(d.licenseExpiry) && !isExpiringSoon(d.licenseExpiry) && (
+                  <div className="bg-background rounded-full p-2 shadow-lg">
+                    <Shield className="h-4 w-4" />
+                  </div>
+                )}
+                <div className="flex flex-col">
+                  <span className="font-bold uppercase tracking-widest text-[10px] opacity-80">
+                    License Expiry
+                  </span>
+                  <span className="font-mono text-sm tracking-widest mt-1 font-bold">
+                    {new Date(d.licenseExpiry).toLocaleDateString()}
+                  </span>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </div>
   );
