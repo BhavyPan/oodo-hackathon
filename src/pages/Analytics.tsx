@@ -109,7 +109,7 @@ export default function Analytics() {
   };
 
   return (
-    <div className="pb-40 cursor-none">
+    <div className="pb-40 ">
       {/* Mini Hero Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
@@ -136,7 +136,7 @@ export default function Analytics() {
             <Button
               onClick={handleExportCSV}
               variant="outline"
-              className="gap-3 bg-white/5 text-white hover:bg-white/10 font-black uppercase tracking-[0.2em] transition-all rounded-xl h-[46px] cursor-none border border-white/10"
+              className="gap-3 bg-white/5 text-white hover:bg-white/10 font-black uppercase tracking-[0.2em] transition-all rounded-xl h-[46px]  border border-white/10"
             >
               <Download className="h-5 w-5" /> Export Intelligence Data
             </Button>

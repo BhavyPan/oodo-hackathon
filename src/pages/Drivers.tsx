@@ -14,7 +14,7 @@ export default function Drivers() {
   };
 
   return (
-    <div className="pb-40 cursor-none">
+    <div className="pb-40 ">
       {/* Mini Hero Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
@@ -45,7 +45,7 @@ export default function Drivers() {
               viewport={{ once: true, margin: "-50px" }}
               transition={{ delay: (i % 6) * 0.1, duration: 0.6, ease: "easeOut" }}
               whileHover={{ scale: 1.02, y: -5 }}
-              className="rounded-[3rem] border border-white/5 glass p-8 md:p-10 space-y-8 active-reflection-border group relative overflow-hidden cursor-none"
+              className="rounded-[3rem] border border-white/5 glass p-8 md:p-10 space-y-8 active-reflection-border group relative overflow-hidden "
             >
               <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 

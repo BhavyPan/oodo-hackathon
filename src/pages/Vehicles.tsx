@@ -99,7 +99,7 @@ export default function Vehicles() {
   };
 
   return (
-    <div className="pb-40 cursor-none">
+    <div className="pb-40 ">
       {/* Mini Hero Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
@@ -137,37 +137,37 @@ export default function Vehicles() {
                 placeholder="Search Database..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                className="w-full rounded-xl border border-white/10 bg-black/50 pl-11 pr-4 py-3 text-xs md:text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all cursor-none uppercase tracking-wider font-bold"
+                className="w-full rounded-xl border border-white/10 bg-black/50 pl-11 pr-4 py-3 text-xs md:text-sm text-white placeholder:text-white/30 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all  uppercase tracking-wider font-bold"
               />
             </div>
             <Select value={typeFilter} onValueChange={(v) => setTypeFilter(v as VehicleType | "All")}>
-              <SelectTrigger className="w-[140px] bg-black/50 border-white/10 text-white focus:ring-primary cursor-none text-xs font-bold uppercase tracking-wider h-[46px] rounded-xl">
+              <SelectTrigger className="w-[140px] bg-black/50 border-white/10 text-white focus:ring-primary  text-xs font-bold uppercase tracking-wider h-[46px] rounded-xl">
                 <SelectValue placeholder="Class Filter" />
               </SelectTrigger>
-              <SelectContent className="bg-black/90 border-white/10 text-white backdrop-blur-xl cursor-none">
-                <SelectItem value="All" className="cursor-none hover:bg-primary hover:text-black">All Classes</SelectItem>
-                <SelectItem value="Truck" className="cursor-none hover:bg-primary hover:text-black">Truck</SelectItem>
-                <SelectItem value="Van" className="cursor-none hover:bg-primary hover:text-black">Van</SelectItem>
-                <SelectItem value="Bike" className="cursor-none hover:bg-primary hover:text-black">Bike</SelectItem>
+              <SelectContent className="bg-black/90 border-white/10 text-white backdrop-blur-xl ">
+                <SelectItem value="All" className=" hover:bg-primary hover:text-black">All Classes</SelectItem>
+                <SelectItem value="Truck" className=" hover:bg-primary hover:text-black">Truck</SelectItem>
+                <SelectItem value="Van" className=" hover:bg-primary hover:text-black">Van</SelectItem>
+                <SelectItem value="Bike" className=" hover:bg-primary hover:text-black">Bike</SelectItem>
               </SelectContent>
             </Select>
             <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v as VehicleStatus | "All")}>
-              <SelectTrigger className="w-[140px] bg-black/50 border-white/10 text-white focus:ring-primary cursor-none text-xs font-bold uppercase tracking-wider h-[46px] rounded-xl">
+              <SelectTrigger className="w-[140px] bg-black/50 border-white/10 text-white focus:ring-primary  text-xs font-bold uppercase tracking-wider h-[46px] rounded-xl">
                 <SelectValue placeholder="Status Filter" />
               </SelectTrigger>
-              <SelectContent className="bg-black/90 border-white/10 text-white backdrop-blur-xl cursor-none">
-                <SelectItem value="All" className="cursor-none hover:bg-primary hover:text-black">All Status</SelectItem>
-                <SelectItem value="Available" className="cursor-none hover:bg-primary hover:text-black">Available</SelectItem>
-                <SelectItem value="On Trip" className="cursor-none hover:bg-primary hover:text-black">On Trip</SelectItem>
-                <SelectItem value="In Shop" className="cursor-none hover:bg-primary hover:text-black">In Shop</SelectItem>
-                <SelectItem value="Retired" className="cursor-none hover:bg-primary hover:text-black">Retired</SelectItem>
+              <SelectContent className="bg-black/90 border-white/10 text-white backdrop-blur-xl ">
+                <SelectItem value="All" className=" hover:bg-primary hover:text-black">All Status</SelectItem>
+                <SelectItem value="Available" className=" hover:bg-primary hover:text-black">Available</SelectItem>
+                <SelectItem value="On Trip" className=" hover:bg-primary hover:text-black">On Trip</SelectItem>
+                <SelectItem value="In Shop" className=" hover:bg-primary hover:text-black">In Shop</SelectItem>
+                <SelectItem value="Retired" className=" hover:bg-primary hover:text-black">Retired</SelectItem>
               </SelectContent>
             </Select>
           </div>
 
           <Button
             onClick={() => handleOpenDialog()}
-            className="w-full md:w-auto gap-3 bg-primary text-black font-black uppercase tracking-[0.2em] hover:bg-primary/80 transition-all rounded-xl h-[46px] cursor-none shadow-[0_0_15px_rgba(204,255,0,0.3)]"
+            className="w-full md:w-auto gap-3 bg-primary text-black font-black uppercase tracking-[0.2em] hover:bg-primary/80 transition-all rounded-xl h-[46px]  shadow-[0_0_15px_rgba(204,255,0,0.3)]"
           >
             <Plus className="h-5 w-5" /> Initialize Asset
           </Button>
@@ -204,7 +204,7 @@ export default function Vehicles() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: (i % 10) * 0.05, duration: 0.5 }}
-                    className="group/row hover:bg-white/5 transition-colors cursor-none"
+                    className="group/row hover:bg-white/5 transition-colors "
                   >
                     <td className="px-6 py-6">
                       <span className="font-black text-base md:text-lg text-white group-hover/row:text-primary transition-colors tracking-tighter uppercase">{v.name}</span>
@@ -217,10 +217,10 @@ export default function Vehicles() {
                     <td className="px-6 py-6"><VehicleStatusBadge status={v.status} /></td>
                     <td className="px-6 py-6 text-right">
                       <div className="flex justify-end gap-2">
-                        <Button variant="ghost" size="icon" onClick={() => handleOpenDialog(v)} className="cursor-none hover:bg-white/10 hover:text-primary transition-colors">
+                        <Button variant="ghost" size="icon" onClick={() => handleOpenDialog(v)} className=" hover:bg-white/10 hover:text-primary transition-colors">
                           <Edit className="h-4 w-4" />
                         </Button>
-                        <Button variant="ghost" size="icon" onClick={() => handleDelete(v.id, v.name)} className="cursor-none hover:bg-destructive/20 hover:text-destructive transition-colors">
+                        <Button variant="ghost" size="icon" onClick={() => handleDelete(v.id, v.name)} className=" hover:bg-destructive/20 hover:text-destructive transition-colors">
                           <Trash2 className="h-4 w-4" />
                         </Button>
                       </div>
@@ -239,7 +239,7 @@ export default function Vehicles() {
       </div>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="sm:max-w-[425px] glass-neon border border-primary/20 bg-black/90 p-8 rounded-3xl cursor-none">
+        <DialogContent className="sm:max-w-[425px] glass-neon border border-primary/20 bg-black/90 p-8 rounded-3xl ">
           <DialogHeader className="mb-6">
             <DialogTitle className="text-2xl font-black text-white uppercase tracking-tighter text-glow">
               {editingVehicle ? 'Update Asset' : 'Initialize Asset'}
@@ -248,46 +248,46 @@ export default function Vehicles() {
           <div className="grid gap-6">
             <div className="space-y-2">
               <Label htmlFor="name" className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Identity Name</Label>
-              <Input id="name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary focus-visible:border-primary transition-all cursor-none" />
+              <Input id="name" value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary focus-visible:border-primary transition-all " />
             </div>
             <div className="space-y-2">
               <Label htmlFor="plate" className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Callsign (Plate)</Label>
-              <Input id="plate" value={formData.licensePlate} onChange={(e) => setFormData({ ...formData, licensePlate: e.target.value })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary focus-visible:border-primary transition-all cursor-none" />
+              <Input id="plate" value={formData.licensePlate} onChange={(e) => setFormData({ ...formData, licensePlate: e.target.value })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary focus-visible:border-primary transition-all " />
             </div>
             <div className="space-y-2">
               <Label htmlFor="type" className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Class</Label>
               <Select value={formData.type} onValueChange={(v) => setFormData({ ...formData, type: v as VehicleType })}>
-                <SelectTrigger className="bg-black/50 border-white/10 text-white focus:ring-primary cursor-none">
+                <SelectTrigger className="bg-black/50 border-white/10 text-white focus:ring-primary ">
                   <SelectValue placeholder="Select class" />
                 </SelectTrigger>
-                <SelectContent className="bg-black/90 border-white/10 text-white backdrop-blur-xl cursor-none">
-                  <SelectItem value="Truck" className="cursor-none hover:bg-primary hover:text-black">Truck</SelectItem>
-                  <SelectItem value="Van" className="cursor-none hover:bg-primary hover:text-black">Van</SelectItem>
-                  <SelectItem value="Bike" className="cursor-none hover:bg-primary hover:text-black">Bike</SelectItem>
+                <SelectContent className="bg-black/90 border-white/10 text-white backdrop-blur-xl ">
+                  <SelectItem value="Truck" className=" hover:bg-primary hover:text-black">Truck</SelectItem>
+                  <SelectItem value="Van" className=" hover:bg-primary hover:text-black">Van</SelectItem>
+                  <SelectItem value="Bike" className=" hover:bg-primary hover:text-black">Bike</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div className="space-y-2">
               <Label htmlFor="capacity" className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Payload Capacity (kg)</Label>
-              <Input id="capacity" type="number" value={formData.maxCapacity} onChange={(e) => setFormData({ ...formData, maxCapacity: parseInt(e.target.value) })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary focus-visible:border-primary transition-all cursor-none" />
+              <Input id="capacity" type="number" value={formData.maxCapacity} onChange={(e) => setFormData({ ...formData, maxCapacity: parseInt(e.target.value) })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary focus-visible:border-primary transition-all " />
             </div>
             <div className="space-y-2">
               <Label htmlFor="status" className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Current Status</Label>
               <Select value={formData.status} onValueChange={(v) => setFormData({ ...formData, status: v as VehicleStatus })}>
-                <SelectTrigger className="bg-black/50 border-white/10 text-white focus:ring-primary cursor-none">
+                <SelectTrigger className="bg-black/50 border-white/10 text-white focus:ring-primary ">
                   <SelectValue placeholder="Select status" />
                 </SelectTrigger>
-                <SelectContent className="bg-black/90 border-white/10 text-white backdrop-blur-xl cursor-none">
-                  <SelectItem value="Available" className="cursor-none hover:bg-primary hover:text-black">Available</SelectItem>
-                  <SelectItem value="On Trip" className="cursor-none hover:bg-primary hover:text-black">On Trip</SelectItem>
-                  <SelectItem value="In Shop" className="cursor-none hover:bg-primary hover:text-black">In Shop</SelectItem>
-                  <SelectItem value="Retired" className="cursor-none hover:bg-primary hover:text-black">Retired</SelectItem>
+                <SelectContent className="bg-black/90 border-white/10 text-white backdrop-blur-xl ">
+                  <SelectItem value="Available" className=" hover:bg-primary hover:text-black">Available</SelectItem>
+                  <SelectItem value="On Trip" className=" hover:bg-primary hover:text-black">On Trip</SelectItem>
+                  <SelectItem value="In Shop" className=" hover:bg-primary hover:text-black">In Shop</SelectItem>
+                  <SelectItem value="Retired" className=" hover:bg-primary hover:text-black">Retired</SelectItem>
                 </SelectContent>
               </Select>
             </div>
           </div>
           <DialogFooter className="mt-8 border-t border-white/10 pt-6">
-            <Button onClick={handleSave} className="w-full bg-primary text-black font-black uppercase tracking-[0.2em] hover:bg-primary/80 transition-all h-12 cursor-none" style={{ boxShadow: "0 0 20px rgba(204,255,0,0.3)" }}>
+            <Button onClick={handleSave} className="w-full bg-primary text-black font-black uppercase tracking-[0.2em] hover:bg-primary/80 transition-all h-12 " style={{ boxShadow: "0 0 20px rgba(204,255,0,0.3)" }}>
               Commit Changes
             </Button>
           </DialogFooter>

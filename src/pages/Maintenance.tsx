@@ -122,7 +122,7 @@ export default function Maintenance() {
   };
 
   return (
-    <div className="pb-40 cursor-none">
+    <div className="pb-40 ">
       {/* Mini Hero Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
@@ -146,17 +146,17 @@ export default function Maintenance() {
       <div className="max-w-[1600px] mx-auto px-4 md:px-8 relative z-10">
         <Tabs defaultValue="service-logs" className="w-full">
           <div className="flex justify-center mb-12">
-            <TabsList className="grid w-full max-w-md grid-cols-2 bg-black/50 border border-white/10 rounded-2xl p-1 h-auto cursor-none">
+            <TabsList className="grid w-full max-w-md grid-cols-2 bg-black/50 border border-white/10 rounded-2xl p-1 h-auto ">
               <TabsTrigger
                 value="service-logs"
-                className="rounded-xl py-3 text-xs font-black uppercase tracking-[0.2em] data-[state=active]:bg-primary data-[state=active]:text-black transition-all cursor-none"
+                className="rounded-xl py-3 text-xs font-black uppercase tracking-[0.2em] data-[state=active]:bg-primary data-[state=active]:text-black transition-all "
               >
                 Service Logs
               </TabsTrigger>
               {user?.role === "Manager" && (
                 <TabsTrigger
                   value="fleet-admin"
-                  className="rounded-xl py-3 text-xs font-black uppercase tracking-[0.2em] data-[state=active]:bg-primary data-[state=active]:text-black transition-all cursor-none"
+                  className="rounded-xl py-3 text-xs font-black uppercase tracking-[0.2em] data-[state=active]:bg-primary data-[state=active]:text-black transition-all "
                 >
                   Administration
                 </TabsTrigger>
@@ -175,7 +175,7 @@ export default function Maintenance() {
               <h2 className="text-xl font-black text-white uppercase tracking-widest text-glow">Maintenance Records</h2>
               <Button
                 onClick={() => setIsServiceDialogOpen(true)}
-                className="gap-3 bg-primary text-black font-black uppercase tracking-[0.2em] hover:bg-primary/80 transition-all rounded-xl h-[46px] cursor-none shadow-[0_0_15px_rgba(204,255,0,0.3)]"
+                className="gap-3 bg-primary text-black font-black uppercase tracking-[0.2em] hover:bg-primary/80 transition-all rounded-xl h-[46px]  shadow-[0_0_15px_rgba(204,255,0,0.3)]"
               >
                 <Plus className="h-5 w-5" /> Log Service
               </Button>
@@ -211,7 +211,7 @@ export default function Maintenance() {
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: (i % 8) * 0.05, duration: 0.4 }}
-                        className="hover:bg-white/5 transition-colors cursor-none"
+                        className="hover:bg-white/5 transition-colors "
                       >
                         <td className="px-6 py-6 font-bold text-white uppercase tracking-widest">{getVehicleName(log.vehicleId)}</td>
                         <td className="px-6 py-6 text-white/80 font-mono text-xs uppercase tracking-widest">{log.type}</td>
@@ -233,7 +233,7 @@ export default function Maintenance() {
                                 completeMaintenanceLog(log.id);
                                 toast({ title: "Service Completed", description: "Vehicle is now Available." });
                               }}
-                              className="cursor-none border-success/30 text-success hover:bg-success/20 hover:text-success uppercase tracking-widest text-[10px] font-bold"
+                              className=" border-success/30 text-success hover:bg-success/20 hover:text-success uppercase tracking-widest text-[10px] font-bold"
                             >
                               <CheckCircle2 className="h-3 w-3 mr-2" /> Complete
                             </Button>
@@ -265,7 +265,7 @@ export default function Maintenance() {
                   </h3>
                   <Button
                     onClick={() => { setIsEditingDriver(false); setDriverFormData({ name: "", phone: "", licenseExpiry: new Date().toISOString().split("T")[0], safetyScore: 100, status: "Off Duty" }); setIsDriverDialogOpen(true); }}
-                    className="gap-3 bg-white/10 text-white hover:bg-white/20 font-black uppercase tracking-[0.2em] transition-all rounded-xl h-[46px] cursor-none border border-white/10 w-full sm:w-auto"
+                    className="gap-3 bg-white/10 text-white hover:bg-white/20 font-black uppercase tracking-[0.2em] transition-all rounded-xl h-[46px]  border border-white/10 w-full sm:w-auto"
                   >
                     <Plus className="h-5 w-5" /> Hire Operator
                   </Button>
@@ -292,7 +292,7 @@ export default function Maintenance() {
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: (i % 8) * 0.05, duration: 0.4 }}
-                            className="hover:bg-white/5 transition-colors cursor-none"
+                            className="hover:bg-white/5 transition-colors "
                           >
                             <td className="px-6 py-6 font-bold text-white uppercase tracking-widest">{driver.name}</td>
                             <td className="px-6 py-6 text-primary/80 font-mono text-xs">{driver.phone}</td>
@@ -300,10 +300,10 @@ export default function Maintenance() {
                             <td className="px-6 py-6"><span className="uppercase text-[10px] tracking-widest font-bold text-white/80">{driver.status}</span></td>
                             <td className="px-6 py-6 text-right">
                               <div className="flex items-center justify-end gap-3">
-                                <Button variant="ghost" size="icon" onClick={() => openEditDriver(driver)} className="cursor-none hover:bg-white/10 hover:text-white text-white/40 rounded-full">
+                                <Button variant="ghost" size="icon" onClick={() => openEditDriver(driver)} className=" hover:bg-white/10 hover:text-white text-white/40 rounded-full">
                                   <Edit className="h-4 w-4" />
                                 </Button>
-                                <Button variant="ghost" size="icon" onClick={() => handleFireDriver(driver.id, driver.name)} className="cursor-none hover:bg-destructive/20 hover:text-destructive text-destructive/60 rounded-full">
+                                <Button variant="ghost" size="icon" onClick={() => handleFireDriver(driver.id, driver.name)} className=" hover:bg-destructive/20 hover:text-destructive text-destructive/60 rounded-full">
                                   <Trash2 className="h-4 w-4" />
                                 </Button>
                               </div>
@@ -351,7 +351,7 @@ export default function Maintenance() {
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: (i % 8) * 0.05, duration: 0.4 }}
-                            className="hover:bg-white/5 transition-colors cursor-none"
+                            className="hover:bg-white/5 transition-colors "
                           >
                             <td className="px-6 py-6 font-bold text-white uppercase tracking-widest">{v.name}</td>
                             <td className="px-6 py-6 text-primary/80 font-mono text-xs tracking-widest">{v.licensePlate}</td>
@@ -371,14 +371,14 @@ export default function Maintenance() {
                                   toast({ title: "Status Overridden", description: `${v.name} forced to ${status}.` });
                                 }}
                               >
-                                <SelectTrigger className="w-full bg-black/50 border-white/10 text-white text-xs uppercase tracking-widest font-bold cursor-none focus:ring-warning focus:border-warning">
+                                <SelectTrigger className="w-full bg-black/50 border-white/10 text-white text-xs uppercase tracking-widest font-bold  focus:ring-warning focus:border-warning">
                                   <SelectValue />
                                 </SelectTrigger>
-                                <SelectContent className="bg-black/90 border-white/10 backdrop-blur-xl cursor-none">
-                                  <SelectItem value="Available" className="cursor-none uppercase tracking-widest text-[10px] font-bold text-white hover:text-black">Available</SelectItem>
-                                  <SelectItem value="On Trip" className="cursor-none uppercase tracking-widest text-[10px] font-bold text-white hover:text-black">On Trip</SelectItem>
-                                  <SelectItem value="In Shop" className="cursor-none uppercase tracking-widest text-[10px] font-bold text-white hover:text-black">In Shop</SelectItem>
-                                  <SelectItem value="Retired" className="cursor-none uppercase tracking-widest text-[10px] font-bold text-white hover:text-black">Retired</SelectItem>
+                                <SelectContent className="bg-black/90 border-white/10 backdrop-blur-xl ">
+                                  <SelectItem value="Available" className=" uppercase tracking-widest text-[10px] font-bold text-white hover:text-black">Available</SelectItem>
+                                  <SelectItem value="On Trip" className=" uppercase tracking-widest text-[10px] font-bold text-white hover:text-black">On Trip</SelectItem>
+                                  <SelectItem value="In Shop" className=" uppercase tracking-widest text-[10px] font-bold text-white hover:text-black">In Shop</SelectItem>
+                                  <SelectItem value="Retired" className=" uppercase tracking-widest text-[10px] font-bold text-white hover:text-black">Retired</SelectItem>
                                 </SelectContent>
                               </Select>
                             </td>
@@ -396,7 +396,7 @@ export default function Maintenance() {
 
       {/* Dialogs updated for cinematic style */}
       <Dialog open={isServiceDialogOpen} onOpenChange={setIsServiceDialogOpen}>
-        <DialogContent className="sm:max-w-[425px] glass border border-primary/20 bg-black/90 p-8 rounded-3xl cursor-none">
+        <DialogContent className="sm:max-w-[425px] glass border border-primary/20 bg-black/90 p-8 rounded-3xl ">
           <DialogHeader className="mb-6">
             <DialogTitle className="text-2xl font-black text-white uppercase tracking-tighter text-glow">Log New Service</DialogTitle>
           </DialogHeader>
@@ -404,12 +404,12 @@ export default function Maintenance() {
             <div className="space-y-2">
               <Label className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Target Asset</Label>
               <Select value={serviceFormData.vehicleId} onValueChange={(v) => setServiceFormData({ ...serviceFormData, vehicleId: v })}>
-                <SelectTrigger className="bg-black/50 border-white/10 text-white focus:ring-primary cursor-none uppercase text-xs tracking-widest">
+                <SelectTrigger className="bg-black/50 border-white/10 text-white focus:ring-primary  uppercase text-xs tracking-widest">
                   <SelectValue placeholder="Select Asset" />
                 </SelectTrigger>
-                <SelectContent className="bg-black/90 border-white/10 text-white backdrop-blur-xl cursor-none">
+                <SelectContent className="bg-black/90 border-white/10 text-white backdrop-blur-xl ">
                   {vehicles.filter(v => v.status !== "Retired" && v.status !== "On Trip").map(v => (
-                    <SelectItem key={v.id} value={v.id} className="cursor-none hover:bg-primary hover:text-black uppercase text-xs tracking-widest">{v.name} - {v.status}</SelectItem>
+                    <SelectItem key={v.id} value={v.id} className=" hover:bg-primary hover:text-black uppercase text-xs tracking-widest">{v.name} - {v.status}</SelectItem>
                   ))}
                   {vehicles.filter(v => v.status !== "Retired" && v.status !== "On Trip").length === 0 && (
                     <SelectItem value="none" disabled className="text-white/40 uppercase text-xs">No valid assets</SelectItem>
@@ -419,31 +419,31 @@ export default function Maintenance() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="type" className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Service Type</Label>
-              <Input id="type" placeholder="e.g. Oil Change" value={serviceFormData.type} onChange={e => setServiceFormData({ ...serviceFormData, type: e.target.value })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary transition-all cursor-none" />
+              <Input id="type" placeholder="e.g. Oil Change" value={serviceFormData.type} onChange={e => setServiceFormData({ ...serviceFormData, type: e.target.value })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary transition-all " />
             </div>
             <div className="space-y-2">
               <Label htmlFor="desc" className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Details</Label>
-              <Input id="desc" value={serviceFormData.description} onChange={e => setServiceFormData({ ...serviceFormData, description: e.target.value })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary transition-all cursor-none" />
+              <Input id="desc" value={serviceFormData.description} onChange={e => setServiceFormData({ ...serviceFormData, description: e.target.value })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary transition-all " />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="cost" className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Total Cost ($)</Label>
-                <Input id="cost" type="number" value={serviceFormData.cost} onChange={e => setServiceFormData({ ...serviceFormData, cost: parseInt(e.target.value) })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary transition-all cursor-none font-mono" />
+                <Input id="cost" type="number" value={serviceFormData.cost} onChange={e => setServiceFormData({ ...serviceFormData, cost: parseInt(e.target.value) })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary transition-all  font-mono" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="date" className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Date</Label>
-                <Input id="date" type="date" value={serviceFormData.date} onChange={e => setServiceFormData({ ...serviceFormData, date: e.target.value })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary transition-all cursor-none font-mono text-sm" />
+                <Input id="date" type="date" value={serviceFormData.date} onChange={e => setServiceFormData({ ...serviceFormData, date: e.target.value })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary transition-all  font-mono text-sm" />
               </div>
             </div>
           </div>
           <DialogFooter className="mt-8 pt-6 border-t border-white/10">
-            <Button onClick={handleCreateService} className="w-full bg-primary hover:bg-primary/80 text-black font-black uppercase tracking-[0.2em] transition-all h-12 cursor-none">Commit Record</Button>
+            <Button onClick={handleCreateService} className="w-full bg-primary hover:bg-primary/80 text-black font-black uppercase tracking-[0.2em] transition-all h-12 ">Commit Record</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
       <Dialog open={isDriverDialogOpen} onOpenChange={setIsDriverDialogOpen}>
-        <DialogContent className="sm:max-w-[425px] glass border border-primary/20 bg-black/90 p-8 rounded-3xl cursor-none">
+        <DialogContent className="sm:max-w-[425px] glass border border-primary/20 bg-black/90 p-8 rounded-3xl ">
           <DialogHeader className="mb-6">
             <DialogTitle className="text-2xl font-black text-white uppercase tracking-tighter text-glow">{isEditingDriver ? "Update Profile" : "Onboard Personnel"}</DialogTitle>
             <DialogDescription className="text-white/40 uppercase tracking-widest text-[10px] font-bold mt-2">Manage credentials and operational status.</DialogDescription>
@@ -451,33 +451,33 @@ export default function Maintenance() {
           <div className="grid gap-6">
             <div className="space-y-2">
               <Label htmlFor="d_name" className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Official Name</Label>
-              <Input id="d_name" value={driverFormData.name} onChange={e => setDriverFormData({ ...driverFormData, name: e.target.value })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary transition-all cursor-none" />
+              <Input id="d_name" value={driverFormData.name} onChange={e => setDriverFormData({ ...driverFormData, name: e.target.value })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary transition-all " />
             </div>
             <div className="space-y-2">
               <Label htmlFor="d_phone" className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Comms Link (Phone)</Label>
-              <Input id="d_phone" value={driverFormData.phone} onChange={e => setDriverFormData({ ...driverFormData, phone: e.target.value })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary transition-all cursor-none font-mono tracking-widest" />
+              <Input id="d_phone" value={driverFormData.phone} onChange={e => setDriverFormData({ ...driverFormData, phone: e.target.value })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary transition-all  font-mono tracking-widest" />
             </div>
             <div className="space-y-2">
               <Label htmlFor="d_expiry" className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Certification Expiry</Label>
-              <Input id="d_expiry" type="date" value={driverFormData.licenseExpiry} onChange={e => setDriverFormData({ ...driverFormData, licenseExpiry: e.target.value })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary transition-all cursor-none font-mono text-sm" />
+              <Input id="d_expiry" type="date" value={driverFormData.licenseExpiry} onChange={e => setDriverFormData({ ...driverFormData, licenseExpiry: e.target.value })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary transition-all  font-mono text-sm" />
             </div>
             {isEditingDriver && (
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="d_score" className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Safety Score</Label>
-                  <Input id="d_score" type="number" min={0} max={100} value={driverFormData.safetyScore} onChange={e => setDriverFormData({ ...driverFormData, safetyScore: parseInt(e.target.value) })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary transition-all cursor-none font-mono" />
+                  <Input id="d_score" type="number" min={0} max={100} value={driverFormData.safetyScore} onChange={e => setDriverFormData({ ...driverFormData, safetyScore: parseInt(e.target.value) })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary transition-all  font-mono" />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="d_status" className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Status Force</Label>
                   <Select value={driverFormData.status} onValueChange={(v) => setDriverFormData({ ...driverFormData, status: v as DriverStatus })}>
-                    <SelectTrigger className="bg-black/50 border-white/10 text-white focus:ring-primary cursor-none uppercase text-xs tracking-widest">
+                    <SelectTrigger className="bg-black/50 border-white/10 text-white focus:ring-primary  uppercase text-xs tracking-widest">
                       <SelectValue placeholder="Status" />
                     </SelectTrigger>
-                    <SelectContent className="bg-black/90 border-white/10 text-white backdrop-blur-xl cursor-none">
-                      <SelectItem value="On Duty" className="cursor-none hover:bg-primary hover:text-black uppercase text-[10px] tracking-widest font-bold">On Duty</SelectItem>
-                      <SelectItem value="Off Duty" className="cursor-none hover:bg-primary hover:text-black uppercase text-[10px] tracking-widest font-bold">Off Duty</SelectItem>
-                      <SelectItem value="Suspended" className="cursor-none hover:bg-primary hover:text-black uppercase text-[10px] tracking-widest font-bold">Suspended</SelectItem>
-                      <SelectItem value="On Trip" className="cursor-none hover:bg-primary hover:text-black uppercase text-[10px] tracking-widest font-bold" disabled>On Trip</SelectItem>
+                    <SelectContent className="bg-black/90 border-white/10 text-white backdrop-blur-xl ">
+                      <SelectItem value="On Duty" className=" hover:bg-primary hover:text-black uppercase text-[10px] tracking-widest font-bold">On Duty</SelectItem>
+                      <SelectItem value="Off Duty" className=" hover:bg-primary hover:text-black uppercase text-[10px] tracking-widest font-bold">Off Duty</SelectItem>
+                      <SelectItem value="Suspended" className=" hover:bg-primary hover:text-black uppercase text-[10px] tracking-widest font-bold">Suspended</SelectItem>
+                      <SelectItem value="On Trip" className=" hover:bg-primary hover:text-black uppercase text-[10px] tracking-widest font-bold" disabled>On Trip</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -485,7 +485,7 @@ export default function Maintenance() {
             )}
           </div>
           <DialogFooter className="mt-8 pt-6 border-t border-white/10">
-            <Button onClick={handleSaveDriver} className="w-full bg-primary hover:bg-primary/80 text-black font-black uppercase tracking-[0.2em] transition-all h-12 cursor-none text-glow shadow-[0_0_15px_rgba(204,255,0,0.2)]">
+            <Button onClick={handleSaveDriver} className="w-full bg-primary hover:bg-primary/80 text-black font-black uppercase tracking-[0.2em] transition-all h-12  text-glow shadow-[0_0_15px_rgba(204,255,0,0.2)]">
               {isEditingDriver ? "Finalize Update" : "Approve Hiring"}
             </Button>
           </DialogFooter>

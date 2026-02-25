@@ -154,7 +154,7 @@ export default function Trips() {
   };
 
   return (
-    <div className="pb-40 cursor-none">
+    <div className="pb-40 ">
       {/* Mini Hero Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
@@ -189,7 +189,7 @@ export default function Trips() {
               <button
                 key={s}
                 onClick={() => setStatusFilter(s)}
-                className={`rounded-xl px-6 py-3 text-xs font-black transition-all uppercase tracking-[0.2em] whitespace-nowrap cursor-none ${statusFilter === s
+                className={`rounded-xl px-6 py-3 text-xs font-black transition-all uppercase tracking-[0.2em] whitespace-nowrap  ${statusFilter === s
                     ? "bg-primary text-black shadow-[0_0_20px_rgba(204,255,0,0.4)] scale-105"
                     : "bg-white/5 text-white/40 hover:text-white hover:bg-white/10"
                   }`}
@@ -201,7 +201,7 @@ export default function Trips() {
 
           <Button
             onClick={() => setIsDialogOpen(true)}
-            className="w-full md:w-auto gap-3 bg-primary text-black font-black uppercase tracking-[0.2em] hover:bg-primary/80 transition-all rounded-xl h-[46px] cursor-none shadow-[0_0_15px_rgba(204,255,0,0.3)] shrink-0"
+            className="w-full md:w-auto gap-3 bg-primary text-black font-black uppercase tracking-[0.2em] hover:bg-primary/80 transition-all rounded-xl h-[46px]  shadow-[0_0_15px_rgba(204,255,0,0.3)] shrink-0"
           >
             <Plus className="h-5 w-5" /> Generate Order
           </Button>
@@ -238,7 +238,7 @@ export default function Trips() {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: (i % 8) * 0.05, duration: 0.4 }}
-                    className="group/row hover:bg-white/5 transition-colors cursor-none"
+                    className="group/row hover:bg-white/5 transition-colors "
                   >
                     <td className="px-6 py-6">
                       <div className="flex items-center gap-3">
@@ -255,17 +255,17 @@ export default function Trips() {
                     <td className="px-6 py-6 text-right">
                       <div className="flex justify-end gap-2">
                         {t.status === "Draft" && (
-                          <Button variant="outline" size="sm" onClick={() => handleDispatch(t.id)} className="cursor-none border-blue-500/30 text-blue-400 hover:bg-blue-500/20 hover:text-blue-300 uppercase tracking-widest text-[10px] font-bold">
+                          <Button variant="outline" size="sm" onClick={() => handleDispatch(t.id)} className=" border-blue-500/30 text-blue-400 hover:bg-blue-500/20 hover:text-blue-300 uppercase tracking-widest text-[10px] font-bold">
                             <Play className="h-3 w-3 mr-2" /> Dispatch
                           </Button>
                         )}
                         {t.status === "Dispatched" && (
-                          <Button variant="outline" size="sm" onClick={() => openCompleteDialog(t)} className="cursor-none border-green-500/30 text-green-400 hover:bg-green-500/20 hover:text-green-300 uppercase tracking-widest text-[10px] font-bold">
+                          <Button variant="outline" size="sm" onClick={() => openCompleteDialog(t)} className=" border-green-500/30 text-green-400 hover:bg-green-500/20 hover:text-green-300 uppercase tracking-widest text-[10px] font-bold">
                             <CheckCircle className="h-3 w-3 mr-2" /> Complete
                           </Button>
                         )}
                         {t.status === "Completed" && (
-                          <Button variant="outline" size="sm" onClick={() => openFuelDialog(t)} className="cursor-none border-orange-500/30 text-orange-400 hover:bg-orange-500/20 hover:text-orange-300 uppercase tracking-widest text-[10px] font-bold">
+                          <Button variant="outline" size="sm" onClick={() => openFuelDialog(t)} className=" border-orange-500/30 text-orange-400 hover:bg-orange-500/20 hover:text-orange-300 uppercase tracking-widest text-[10px] font-bold">
                             <Fuel className="h-3 w-3 mr-2" /> Log Fuel
                           </Button>
                         )}
@@ -286,7 +286,7 @@ export default function Trips() {
 
       {/* Dialogs updated for cinematic style */}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="sm:max-w-[425px] glass-neon border border-primary/20 bg-black/90 p-8 rounded-3xl cursor-none">
+        <DialogContent className="sm:max-w-[425px] glass-neon border border-primary/20 bg-black/90 p-8 rounded-3xl ">
           <DialogHeader className="mb-6">
             <DialogTitle className="text-2xl font-black text-white uppercase tracking-tighter text-glow">
               Generate Route Order
@@ -295,25 +295,25 @@ export default function Trips() {
           <div className="grid gap-6">
             <div className="space-y-2">
               <Label htmlFor="origin" className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Origin Point</Label>
-              <Input id="origin" value={formData.origin} onChange={e => setFormData({ ...formData, origin: e.target.value })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary focus-visible:border-primary transition-all cursor-none" />
+              <Input id="origin" value={formData.origin} onChange={e => setFormData({ ...formData, origin: e.target.value })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary focus-visible:border-primary transition-all " />
             </div>
             <div className="space-y-2">
               <Label htmlFor="dest" className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Destination Point</Label>
-              <Input id="dest" value={formData.destination} onChange={e => setFormData({ ...formData, destination: e.target.value })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary focus-visible:border-primary transition-all cursor-none" />
+              <Input id="dest" value={formData.destination} onChange={e => setFormData({ ...formData, destination: e.target.value })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary focus-visible:border-primary transition-all " />
             </div>
             <div className="space-y-2">
               <Label htmlFor="weight" className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Payload Mass (KG)</Label>
-              <Input id="weight" type="number" value={formData.cargoWeight} onChange={e => setFormData({ ...formData, cargoWeight: parseInt(e.target.value) })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary focus-visible:border-primary transition-all cursor-none" />
+              <Input id="weight" type="number" value={formData.cargoWeight} onChange={e => setFormData({ ...formData, cargoWeight: parseInt(e.target.value) })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary focus-visible:border-primary transition-all " />
             </div>
             <div className="space-y-2">
               <Label className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Assign Asset</Label>
               <Select value={formData.vehicleId} onValueChange={(v) => setFormData({ ...formData, vehicleId: v })}>
-                <SelectTrigger className="bg-black/50 border-white/10 text-white focus:ring-primary cursor-none">
+                <SelectTrigger className="bg-black/50 border-white/10 text-white focus:ring-primary ">
                   <SelectValue placeholder="Select Available Asset" />
                 </SelectTrigger>
-                <SelectContent className="bg-black/90 border-white/10 text-white backdrop-blur-xl cursor-none">
+                <SelectContent className="bg-black/90 border-white/10 text-white backdrop-blur-xl ">
                   {availableVehicles.map(v => (
-                    <SelectItem key={v.id} value={v.id} className="cursor-none hover:bg-primary hover:text-black">{v.name} ({v.maxCapacity}K MAX)</SelectItem>
+                    <SelectItem key={v.id} value={v.id} className=" hover:bg-primary hover:text-black">{v.name} ({v.maxCapacity}K MAX)</SelectItem>
                   ))}
                   {availableVehicles.length === 0 && <SelectItem value="none" disabled className="text-white/40">No assets available</SelectItem>}
                 </SelectContent>
@@ -322,12 +322,12 @@ export default function Trips() {
             <div className="space-y-2">
               <Label className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Assign Operator</Label>
               <Select value={formData.driverId} onValueChange={(v) => setFormData({ ...formData, driverId: v })}>
-                <SelectTrigger className="bg-black/50 border-white/10 text-white focus:ring-primary cursor-none">
+                <SelectTrigger className="bg-black/50 border-white/10 text-white focus:ring-primary ">
                   <SelectValue placeholder="Select Available Operator" />
                 </SelectTrigger>
-                <SelectContent className="bg-black/90 border-white/10 text-white backdrop-blur-xl cursor-none">
+                <SelectContent className="bg-black/90 border-white/10 text-white backdrop-blur-xl ">
                   {availableDrivers.map(d => (
-                    <SelectItem key={d.id} value={d.id} className="cursor-none hover:bg-primary hover:text-black">{d.name}</SelectItem>
+                    <SelectItem key={d.id} value={d.id} className=" hover:bg-primary hover:text-black">{d.name}</SelectItem>
                   ))}
                   {availableDrivers.length === 0 && <SelectItem value="none" disabled className="text-white/40">No operators available</SelectItem>}
                 </SelectContent>
@@ -335,7 +335,7 @@ export default function Trips() {
             </div>
           </div>
           <DialogFooter className="mt-8 border-t border-white/10 pt-6">
-            <Button onClick={handleCreate} className="w-full bg-primary text-black font-black uppercase tracking-[0.2em] hover:bg-primary/80 transition-all h-12 cursor-none shadow-[0_0_20px_rgba(204,255,0,0.3)]">
+            <Button onClick={handleCreate} className="w-full bg-primary text-black font-black uppercase tracking-[0.2em] hover:bg-primary/80 transition-all h-12  shadow-[0_0_20px_rgba(204,255,0,0.3)]">
               Initialize Route
             </Button>
           </DialogFooter>
@@ -343,7 +343,7 @@ export default function Trips() {
       </Dialog>
 
       <Dialog open={isCompleteDialogOpen} onOpenChange={setIsCompleteDialogOpen}>
-        <DialogContent className="sm:max-w-[425px] glass border border-primary/20 bg-black/90 p-8 rounded-3xl cursor-none">
+        <DialogContent className="sm:max-w-[425px] glass border border-primary/20 bg-black/90 p-8 rounded-3xl ">
           <DialogHeader className="mb-6">
             <DialogTitle className="text-2xl font-black text-white uppercase tracking-tighter text-glow">Confirm Arrival</DialogTitle>
           </DialogHeader>
@@ -351,32 +351,32 @@ export default function Trips() {
             <p className="text-xs text-white/50 uppercase tracking-widest font-bold">Verify final telemetric reading for returning asset.</p>
             <div className="space-y-2">
               <Label htmlFor="odo" className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Final Odometer</Label>
-              <Input id="odo" type="number" value={finalOdometer} onChange={e => setFinalOdometer(parseInt(e.target.value))} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary transition-all cursor-none font-mono tracking-widest" />
+              <Input id="odo" type="number" value={finalOdometer} onChange={e => setFinalOdometer(parseInt(e.target.value))} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary transition-all  font-mono tracking-widest" />
             </div>
           </div>
           <DialogFooter className="mt-8 pt-6 border-t border-white/10">
-            <Button onClick={handleComplete} className="w-full bg-green-500 hover:bg-green-400 text-black font-black uppercase tracking-[0.2em] transition-all h-12 cursor-none">Acknowledge</Button>
+            <Button onClick={handleComplete} className="w-full bg-green-500 hover:bg-green-400 text-black font-black uppercase tracking-[0.2em] transition-all h-12 ">Acknowledge</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
       <Dialog open={isFuelDialogOpen} onOpenChange={setIsFuelDialogOpen}>
-        <DialogContent className="sm:max-w-[425px] glass border border-primary/20 bg-black/90 p-8 rounded-3xl cursor-none">
+        <DialogContent className="sm:max-w-[425px] glass border border-primary/20 bg-black/90 p-8 rounded-3xl ">
           <DialogHeader className="mb-6">
             <DialogTitle className="text-2xl font-black text-white uppercase tracking-tighter text-glow">Log Fuel Expense</DialogTitle>
           </DialogHeader>
           <div className="grid gap-6">
             <div className="space-y-2">
               <Label htmlFor="liters" className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Volume (Liters)</Label>
-              <Input id="liters" type="number" value={fuelData.liters} onChange={e => setFuelData({ ...fuelData, liters: parseFloat(e.target.value) })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary transition-all cursor-none font-mono" />
+              <Input id="liters" type="number" value={fuelData.liters} onChange={e => setFuelData({ ...fuelData, liters: parseFloat(e.target.value) })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary transition-all  font-mono" />
             </div>
             <div className="space-y-2">
               <Label htmlFor="cost" className="text-white/60 uppercase tracking-widest text-[10px] font-bold">Total Cost ($)</Label>
-              <Input id="cost" type="number" value={fuelData.cost} onChange={e => setFuelData({ ...fuelData, cost: parseFloat(e.target.value) })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary transition-all cursor-none font-mono" />
+              <Input id="cost" type="number" value={fuelData.cost} onChange={e => setFuelData({ ...fuelData, cost: parseFloat(e.target.value) })} className="bg-black/50 border-white/10 text-white focus-visible:ring-primary transition-all  font-mono" />
             </div>
           </div>
           <DialogFooter className="mt-8 pt-6 border-t border-white/10">
-            <Button onClick={handleAddFuel} className="w-full bg-orange-500 hover:bg-orange-400 text-black font-black uppercase tracking-[0.2em] transition-all h-12 cursor-none">Submit Log</Button>
+            <Button onClick={handleAddFuel} className="w-full bg-orange-500 hover:bg-orange-400 text-black font-black uppercase tracking-[0.2em] transition-all h-12 ">Submit Log</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

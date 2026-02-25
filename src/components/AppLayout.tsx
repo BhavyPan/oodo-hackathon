@@ -4,8 +4,6 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { TopNav } from "./TopNav";
 import { LogOut } from "lucide-react";
 import { Button } from "./ui/button";
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 
 export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated } = useAuth();
@@ -25,63 +23,12 @@ export const RoleProtectedRoute = ({ children, allowedRoles }: { children: React
   return <>{children}</>;
 };
 
-// Global Custom Cursor
-function CustomCursor() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [isHovering, setIsHovering] = useState(false);
-
-  useEffect(() => {
-    const updateMousePosition = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-
-    const handleMouseOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (target.closest('a') || target.closest('button') || target.closest('input')) {
-        setIsHovering(true);
-      } else {
-        setIsHovering(false);
-      }
-    };
-
-    window.addEventListener("mousemove", updateMousePosition);
-    window.addEventListener("mouseover", handleMouseOver);
-
-    return () => {
-      window.removeEventListener("mousemove", updateMousePosition);
-      window.removeEventListener("mouseover", handleMouseOver);
-    };
-  }, []);
-
-  return (
-    <>
-      <motion.div
-        className="fixed top-0 left-0 w-4 h-4 rounded-full bg-primary pointer-events-none z-[100] mix-blend-screen"
-        animate={{
-          x: mousePosition.x - 8,
-          y: mousePosition.y - 8,
-          scale: isHovering ? 2.5 : 1,
-          opacity: isHovering ? 0.4 : 1
-        }}
-        transition={{ type: "spring", stiffness: 500, damping: 28, mass: 0.5 }}
-        style={{ boxShadow: "0 0 20px rgba(204,255,0,0.8)" }}
-      />
-      <motion.div
-        className="fixed top-0 left-0 w-1 h-1 rounded-full bg-white pointer-events-none z-[100]"
-        animate={{ x: mousePosition.x - 2, y: mousePosition.y - 2 }}
-        transition={{ type: "spring", stiffness: 2000, damping: 40, mass: 0.1 }}
-      />
-    </>
-  );
-}
-
 export default function AppLayout() {
   const { user, logout } = useAuth();
 
   return (
     <SidebarProvider>
-      <div className="min-h-[100dvh] w-full bg-black relative selection:bg-primary/20 text-foreground overflow-x-hidden cursor-none">
-        <CustomCursor />
+      <div className="min-h-[100dvh] w-full bg-black relative selection:bg-primary/20 text-foreground overflow-x-hidden">
 
         {/* Dynamic Background Layer */}
         <div className="fixed inset-0 z-0 bg-kinetic pointer-events-none" />
@@ -118,7 +65,7 @@ export default function AppLayout() {
                   <p className="text-sm font-bold text-white uppercase tracking-wider">{user?.name}</p>
                   <p className="text-xs text-primary tracking-widest uppercase">{user?.role}</p>
                 </div>
-                <Button variant="ghost" size="icon" onClick={logout} title="Logout" className="text-white hover:text-destructive hover:bg-destructive/10 transition-colors cursor-none">
+                <Button variant="ghost" size="icon" onClick={logout} title="Logout" className="text-white hover:text-destructive hover:bg-destructive/10 transition-colors">
                   <LogOut className="h-5 w-5" />
                 </Button>
               </div>

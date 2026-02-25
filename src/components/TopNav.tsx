@@ -45,7 +45,7 @@ export function TopNav() {
             to={item.to}
             data-active={isActive}
             className={cn(
-              "group relative flex items-center justify-center p-2 lg:px-4 lg:py-2 text-xs font-black uppercase tracking-[0.2em] transition-colors cursor-none",
+              "group relative flex items-center justify-center p-2 lg:px-4 lg:py-2 text-xs font-black uppercase tracking-[0.2em] transition-colors ",
               isActive ? "text-primary" : "text-white/40 hover:text-white"
             )}
           >

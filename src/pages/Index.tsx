@@ -32,7 +32,7 @@ export default function Dashboard() {
   const recentTrips = [...trips].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).slice(0, 5);
 
   return (
-    <div ref={containerRef} className="pb-40 cursor-none">
+    <div ref={containerRef} className="pb-40 ">
 
       {/* Massive Hero Section */}
       <motion.div
@@ -126,7 +126,7 @@ export default function Dashboard() {
                   {vehicles.slice(0, 6).map((v, i) => (
                     <motion.tr
                       key={v.id}
-                      className="group/row hover:bg-white/5 transition-colors cursor-none"
+                      className="group/row hover:bg-white/5 transition-colors "
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
@@ -145,7 +145,7 @@ export default function Dashboard() {
             </div>
 
             <div className="mt-8 flex justify-end">
-              <Link to="/vehicles" className="inline-flex items-center gap-3 text-primary text-xs font-black uppercase tracking-[0.2em] hover:text-white transition-colors group/link cursor-none">
+              <Link to="/vehicles" className="inline-flex items-center gap-3 text-primary text-xs font-black uppercase tracking-[0.2em] hover:text-white transition-colors group/link ">
                 Access Full Registry <ChevronRight className="h-4 w-4 transition-transform group-hover/link:translate-x-2" />
               </Link>
             </div>
@@ -184,7 +184,7 @@ export default function Dashboard() {
                   {recentTrips.map((t, i) => (
                     <motion.tr
                       key={t.id}
-                      className="group/row hover:bg-white/5 transition-colors cursor-none"
+                      className="group/row hover:bg-white/5 transition-colors "
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
@@ -212,7 +212,7 @@ export default function Dashboard() {
             </div>
 
             <div className="mt-8 flex justify-end">
-              <Link to="/trips" className="inline-flex items-center gap-3 text-primary text-xs font-black uppercase tracking-[0.2em] hover:text-white transition-colors group/link cursor-none">
+              <Link to="/trips" className="inline-flex items-center gap-3 text-primary text-xs font-black uppercase tracking-[0.2em] hover:text-white transition-colors group/link ">
                 Access Route Logs <ChevronRight className="h-4 w-4 transition-transform group-hover/link:translate-x-2" />
               </Link>
             </div>
